@@ -1,59 +1,47 @@
 "use client";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { detectLang, translate, type Key, type Lang } from "./i18n";
-import { nextRound, type Round } from "./tournament";
+import { translate, type Key, type Lang } from "./i18n";
+import { emptyState, repository, type State } from "./repository";
+import { nextRound } from "./tournament";
+import { useCloudSync, useSharedState } from "./use-cloud";
 
-export type Player = { id: string; name: string; active: boolean };
-
-type State = { players: Player[]; tables: number; rounds: Round[]; lang: Lang };
-
-const STORAGE_KEY = "sternchenturnier:v1";
-const emptyState: State = { players: [], tables: 2, rounds: [], lang: "en" };
+export type { Player } from "./repository";
 
 const newId = () => `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
-function readStored(): State {
-  let saved: Partial<State> = {};
-  try {
-    saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
-  } catch {
-    saved = {};
-  }
-  return { ...emptyState, lang: detectLang(), ...saved };
-}
-
 // readOnly is for the display window: it follows the operator's window and never writes
-function useAppState(readOnly: boolean) {
+function useAppState(readOnly: boolean, shareId?: string) {
   const [state, setState] = useState<State>(emptyState);
   const [ready, setReady] = useState(false);
 
   // Load once on the client (localStorage does not exist on the server)
   useEffect(() => {
+    if (shareId) return; // a shared display gets its data from the cloud instead
     Promise.resolve().then(() => {
-      setState(readStored());
+      setState(repository.load());
       setReady(true);
     });
-  }, []);
+  }, [shareId]);
 
-  // The browser tells other windows of the same site when this key changes
   useEffect(() => {
-    if (!readOnly) return;
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === STORAGE_KEY || e.key === null) setState(readStored());
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, [readOnly]);
+    if (!readOnly || shareId) return;
+    return repository.subscribe(setState);
+  }, [readOnly, shareId]);
+
+  const applyShared = useCallback((next: State) => {
+    setState((prev) => (JSON.stringify(prev) === JSON.stringify(next) ? prev : next));
+    setReady(true);
+  }, []);
+  useSharedState(shareId, applyShared);
+
+  const replaceState = useCallback((next: State) => setState(next), []);
+  const cloud = useCloudSync(state, ready, replaceState, !readOnly);
 
   useEffect(() => {
     if (!ready) return;
     document.documentElement.lang = state.lang;
     if (readOnly) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // storage full or blocked: the app keeps working in memory
-    }
+    repository.save(state);
   }, [state, ready, readOnly]);
 
   const update = useCallback((change: (s: State) => State) => setState(change), []);
@@ -95,14 +83,22 @@ function useAppState(readOnly: boolean) {
     [update],
   );
 
-  return { state, ready, actions };
+  return { state, ready, actions, cloud };
 }
 
 type App = ReturnType<typeof useAppState> & { t: (key: Key, values?: Record<string, string | number>) => string };
 const AppContext = createContext<App | null>(null);
 
-export function AppProvider({ children, readOnly = false }: { children: ReactNode; readOnly?: boolean }) {
-  const app = useAppState(readOnly);
+export function AppProvider({
+  children,
+  readOnly = false,
+  shareId,
+}: {
+  children: ReactNode;
+  readOnly?: boolean;
+  shareId?: string;
+}) {
+  const app = useAppState(readOnly, shareId);
   const lang = app.state.lang;
   const t = useCallback((key: Key, values?: Record<string, string | number>) => translate(lang, key, values), [lang]);
   const value = useMemo(() => ({ ...app, t }), [app, t]);

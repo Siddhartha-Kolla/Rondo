@@ -111,8 +111,15 @@ function Display() {
 }
 
 export default function DisplayPage() {
+  // ?t=<share id> shows an online tournament; without it the display follows this browser's own data
+  const [shareId, setShareId] = useState<string | null | undefined>(undefined);
+  useEffect(() => {
+    Promise.resolve().then(() => setShareId(new URLSearchParams(window.location.search).get("t")));
+  }, []);
+  if (shareId === undefined) return null;
+
   return (
-    <AppProvider readOnly>
+    <AppProvider readOnly shareId={shareId ?? undefined}>
       <TooltipProvider>
         <Display />
       </TooltipProvider>

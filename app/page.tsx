@@ -5,13 +5,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { PlayView } from "@/components/play-view";
 import { SetupView } from "@/components/setup-view";
 import { StandingsView } from "@/components/standings-view";
+import { displayUrl } from "@/components/cloud-section";
 import { LANGS } from "@/lib/i18n";
 import { AppProvider, useApp } from "@/lib/store";
 
 type Tab = "play" | "standings" | "setup";
 
 function Shell() {
-  const { state, ready, actions, t } = useApp();
+  const { state, ready, actions, cloud, t } = useApp();
   const [chosen, setChosen] = useState<Tab | null>(null);
   // With fewer than 4 players there is nothing to play yet, so start in Setup
   const tab = chosen ?? (state.players.filter((p) => p.active).length >= 4 ? "play" : "setup");
@@ -28,7 +29,7 @@ function Shell() {
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-4 text-xs">
       <header className="flex items-center gap-2">
         <h1 className="mr-auto text-sm font-medium">{t("appName")}</h1>
-        <Button size="sm" variant="outline" onClick={() => window.open("/display", "sternchenturnier-display")}>
+        <Button size="sm" variant="outline" onClick={() => window.open(cloud.shareId ? displayUrl(cloud.shareId) : new URL("display", window.location.href).toString(), "sternchenturnier-display")}>
           {t("openDisplay")}
         </Button>
         <div role="group" aria-label={t("language")} className="flex">
