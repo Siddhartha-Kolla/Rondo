@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sternchenturnier
 
-## Getting Started
+A tournament tool for table tennis doubles evenings: partners and opponents change every round, the winners of each match get a star, and the standings update live. Works in English and German, on a phone or on a big screen.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Without any setup, everything is saved in the browser. To save online and show live standings on another device, create a free Supabase project, run `supabase/schema.sql` in its SQL editor, and put these two public values in `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+An existing database needs `supabase/migration-2026-10-19-share-and-delete.sql` once.
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+The site is a static export (`npm run build` writes `out/`). `.github/workflows/deploy.yml` publishes it to GitHub Pages on every push. Set the repository variables `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `CUSTOM_DOMAIN` if you use your own domain.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Where things are
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/`: pages (`/`, `/display` for a monitor, `/legal`)
+- `components/`: screens and pieces; `components/ui/` are the shadcn base components
+- `lib/tournament.ts`: pairing and standings (the cost function is explained at the top)
+- `lib/store.tsx`, `lib/use-cloud.ts`, `lib/cloud.ts`: state, online saving, Supabase
+- `lib/legal.ts`: terms and privacy text; fill in `OPERATOR` at the top
+- `PRODUCT.md`, `DESIGN.md`: what the product is and how it looks

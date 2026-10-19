@@ -1,5 +1,6 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StandingsTable, useStandingRows } from "@/components/standings-view";
@@ -30,10 +31,26 @@ function Display() {
     if (current) setIndex(roundSlide);
   }
 
+  // The automatic rhythm never changes: every 15 seconds it moves on by itself, whatever was clicked in between
   useEffect(() => {
     const timer = setInterval(() => setIndex((i) => i + 1), SLIDE_SECONDS * 1000);
     return () => clearInterval(timer);
   }, []);
+
+  // Go to the previous or next page right away (wraps around)
+  const go = useCallback(
+    (step: number) => setIndex((i) => (((i % slideCount) + step) % slideCount + slideCount) % slideCount),
+    [slideCount],
+  );
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") go(1);
+      if (e.key === "ArrowLeft") go(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go]);
 
   if (!ready) return null;
 
@@ -55,6 +72,19 @@ function Display() {
           {shared.offline ? t("displayOffline") : t("live")}
           {shared.updatedAt && <span>{t("updatedAt", { time: formatTime(shared.updatedAt, true) })}</span>}
         </p>
+        {slideCount > 1 && (
+          <div className="flex items-center gap-2">
+            <Button size="icon-sm" variant="outline" aria-label={t("previousSlide")} title={t("previousSlide")} onClick={() => go(-1)}>
+              <CaretLeft aria-hidden />
+            </Button>
+            <span className="font-mono text-muted-foreground tabular-nums">
+              {slide + 1}/{slideCount}
+            </span>
+            <Button size="icon-sm" variant="outline" aria-label={t("nextSlide")} title={t("nextSlide")} onClick={() => go(1)}>
+              <CaretRight aria-hidden />
+            </Button>
+          </div>
+        )}
         <Button
           size="sm"
           variant="outline"

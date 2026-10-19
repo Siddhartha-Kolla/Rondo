@@ -173,7 +173,7 @@ Two rows that never move: title with Open display and the language switch, then 
 One line that says where the data lives: an 8px square marker plus text. Blue marker for "Saved online", muted for local, saving and offline, destructive for conflict, auth and error. A small outline button (Reload) appears only on conflict.
 
 ### Display (monitor view)
-`/display` is a read-only screen for a monitor or TV. The same vocabulary at larger scale: type sized from the viewport height, standings in pages of eight rows, alternating every 15 seconds with the current round's tables. A small square marker reads Live or Offline with the time of the last update; its only control is Fullscreen.
+`/display` is a read-only screen for a monitor or TV. The same vocabulary at larger scale: type sized from the viewport height, standings in pages of eight rows, alternating every 15 seconds with the current round's tables. A small square marker reads Live or Offline with the time of the last update. Controls: previous and next page (buttons with a page counter, or the left and right arrow keys; they wrap around and never disturb the 15-second rhythm) and Fullscreen.
 
 ### Earlier Rounds
 Closed by default. Each round is a bordered summary row (name and results count) that opens into one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
