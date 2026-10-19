@@ -1,0 +1,98 @@
+export type Lang = "en" | "de";
+export const LANGS: Lang[] = ["en", "de"];
+
+const en = {
+  appName: "Sternchenturnier",
+  tabPlay: "Play",
+  tabStandings: "Standings",
+  tabSetup: "Setup",
+  language: "Language",
+  round: "Round {n}",
+  table: "Table {n}",
+  vs: "vs",
+  nextRound: "Next round",
+  startFirstRound: "Start first round",
+  decided: "{done} of {total} tables decided",
+  markAllToContinue: "Mark a winner on every table to continue.",
+  sittingOut: "Sitting out",
+  nobody: "Nobody",
+  winnerPick: "Winner: {team}",
+  earlierRounds: "Earlier rounds",
+  needPlayers: "Add at least 4 active players in Setup to start.",
+  rank: "Rank",
+  player: "Player",
+  stars: "Stars",
+  games: "Games",
+  streak: "Streak",
+  noGamesYet: "No results yet. Stars appear here once a table has a winner.",
+  players: "Players",
+  addPlayers: "Add players",
+  addPlayersHint: "One name, or several separated by commas.",
+  add: "Add",
+  active: "Active",
+  inactive: "Away",
+  remove: "Remove",
+  removeLocked: "Players with results cannot be removed. Set them to away instead.",
+  nameOf: "Name of player {n}",
+  tables: "Tables",
+  tablesHint: "How many tables are free this evening.",
+  resetTournament: "Reset tournament",
+  resetConfirm: "Delete all rounds and results? Players are kept.",
+  confirm: "Confirm",
+  cancel: "Cancel",
+  activeCount: "{n} active",
+} as const;
+
+export type Key = keyof typeof en;
+
+const de: Record<Key, string> = {
+  appName: "Sternchenturnier",
+  tabPlay: "Spielen",
+  tabStandings: "Rangliste",
+  tabSetup: "Einstellungen",
+  language: "Sprache",
+  round: "Runde {n}",
+  table: "Tisch {n}",
+  vs: "gegen",
+  nextRound: "Nächste Runde",
+  startFirstRound: "Erste Runde starten",
+  decided: "{done} von {total} Tischen entschieden",
+  markAllToContinue: "Markiere an jedem Tisch einen Sieger, um fortzufahren.",
+  sittingOut: "Pausiert",
+  nobody: "Niemand",
+  winnerPick: "Sieger: {team}",
+  earlierRounds: "Frühere Runden",
+  needPlayers: "Füge in den Einstellungen mindestens 4 aktive Spieler hinzu.",
+  rank: "Platz",
+  player: "Spieler",
+  stars: "Sterne",
+  games: "Spiele",
+  streak: "Serie",
+  noGamesYet: "Noch keine Ergebnisse. Sterne erscheinen, sobald ein Tisch einen Sieger hat.",
+  players: "Spieler",
+  addPlayers: "Spieler hinzufügen",
+  addPlayersHint: "Ein Name oder mehrere, durch Kommas getrennt.",
+  add: "Hinzufügen",
+  active: "Aktiv",
+  inactive: "Abwesend",
+  remove: "Entfernen",
+  removeLocked: "Spieler mit Ergebnissen können nicht entfernt werden. Setze sie stattdessen auf abwesend.",
+  nameOf: "Name von Spieler {n}",
+  tables: "Tische",
+  tablesHint: "Wie viele Tische heute Abend frei sind.",
+  resetTournament: "Turnier zurücksetzen",
+  resetConfirm: "Alle Runden und Ergebnisse löschen? Spieler bleiben erhalten.",
+  confirm: "Bestätigen",
+  cancel: "Abbrechen",
+  activeCount: "{n} aktiv",
+};
+
+const dictionaries: Record<Lang, Record<Key, string>> = { en, de };
+
+export function translate(lang: Lang, key: Key, values: Record<string, string | number> = {}): string {
+  return dictionaries[lang][key].replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ""));
+}
+
+export function detectLang(): Lang {
+  return typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("de") ? "de" : "en";
+}
