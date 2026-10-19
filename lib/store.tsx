@@ -32,7 +32,7 @@ function useAppState(readOnly: boolean, shareId?: string) {
     setState((prev) => (JSON.stringify(prev) === JSON.stringify(next) ? prev : next));
     setReady(true);
   }, []);
-  useSharedState(shareId, applyShared);
+  const shared = useSharedState(shareId, applyShared);
 
   const replaceState = useCallback((next: State) => setState(next), []);
   const cloud = useCloudSync(state, ready, replaceState, !readOnly);
@@ -79,11 +79,12 @@ function useAppState(readOnly: boolean, shareId?: string) {
           return { ...s, rounds };
         }),
       reset: () => update((s) => ({ ...s, rounds: [] })),
+      replaceAll: (next: State) => update(() => next),
     }),
     [update],
   );
 
-  return { state, ready, actions, cloud };
+  return { state, ready, actions, cloud, shared };
 }
 
 type App = ReturnType<typeof useAppState> & { t: (key: Key, values?: Record<string, string | number>) => string };

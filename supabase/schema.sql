@@ -12,6 +12,10 @@ create table public.tournaments (
 
 alter table public.tournaments enable row level security;
 
+-- Table-level permission for logged-in users only (the policy below then limits them to their own rows).
+-- The public "anon" role gets no table access at all.
+grant select, insert, update, delete on public.tournaments to authenticated;
+
 -- The organizer can do everything with their own tournaments, nothing with anyone else's.
 create policy "owner full access" on public.tournaments
   for all to authenticated

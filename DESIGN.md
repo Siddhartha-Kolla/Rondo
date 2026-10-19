@@ -159,6 +159,9 @@ The playful elements, all built from the same square, flat parts:
 ### Earlier Rounds
 Closed by default. Each round is a bordered summary row (round name, results count) that opens to one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
 
+### Save Status
+One line that always says where the data lives: a 8px square marker plus text. Table Blue marker for "Saved online", muted for local, saving and offline, destructive for conflict, auth and error states. A small outline button (Reload) appears only on conflict. On the display page the same marker reads Live or Offline with the time of the last update.
+
 ### Player Profile
 Opened by tapping a name in Standings (read-only display windows show plain names). An inline view with a Back button, not a modal. Plain bordered lists: a summary list, a form strip of ten 16px square cells (filled = won, outlined = lost, shaded = sat out, dashed = undecided, each with a tooltip), partner and opponent lists with games and wins, and a match log whose won rows are shaded and starred.
 

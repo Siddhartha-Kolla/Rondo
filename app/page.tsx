@@ -6,6 +6,7 @@ import { PlayView } from "@/components/play-view";
 import { SetupView } from "@/components/setup-view";
 import { StandingsView } from "@/components/standings-view";
 import { displayUrl } from "@/components/cloud-section";
+import { SaveStatus } from "@/components/save-status";
 import { LANGS } from "@/lib/i18n";
 import { AppProvider, useApp } from "@/lib/store";
 
@@ -46,6 +47,8 @@ function Shell() {
           ))}
         </div>
       </header>
+
+      <SaveStatus />
 
       <div role="group" className="grid grid-cols-3">
         {tabs.map(({ id, label }) => (

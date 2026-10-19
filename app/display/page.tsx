@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { StandingsTable, useStandingRows } from "@/components/standings-view";
 import { TableGraphic } from "@/components/table-graphic";
 import { AppProvider, useApp, useNames } from "@/lib/store";
+import { formatTime } from "@/components/save-status";
 import { playersOf } from "@/lib/tournament";
 
 const SLIDE_SECONDS = 15;
@@ -12,7 +13,7 @@ const ROWS_PER_PAGE = 8;
 
 // Read-only screen for a monitor: standings pages and the current round take turns.
 function Display() {
-  const { state, ready, t } = useApp();
+  const { state, ready, shared, t } = useApp();
   const name = useNames();
   const { rows, max } = useStandingRows();
   const current = state.rounds.at(-1);
@@ -49,9 +50,10 @@ function Display() {
         {state.rounds.length > 0 && (
           <p className="text-muted-foreground">{t("round", { n: state.rounds.length })}</p>
         )}
-        <p className="ml-auto flex items-center gap-2 text-muted-foreground">
-          <span aria-hidden className="size-[0.6em] bg-table-blue" />
-          {t("live")}
+        <p className="ml-auto flex items-center gap-2 text-muted-foreground tabular-nums">
+          <span aria-hidden className={shared.offline ? "size-[0.6em] bg-muted-foreground" : "size-[0.6em] bg-table-blue"} />
+          {shared.offline ? t("displayOffline") : t("live")}
+          {shared.updatedAt && <span>{t("updatedAt", { time: formatTime(shared.updatedAt, true) })}</span>}
         </p>
         <Button
           size="sm"

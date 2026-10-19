@@ -25,6 +25,8 @@ Organizers set the number of players and tables, press "next round", and enter m
 - Undecided: persistence/accounts/backend, UI language (the term "Sternchenturnier" is German), how player-facing views are shared with the organizer.
 - Must work on a phone.
 - Multilingual: the UI will support several languages (confirmed 2026-10-19; which ones is undecided).
+- Persistence: browser storage is the working copy; Supabase (static site, browser talks directly to it) is the durable shared copy. Organizers log in with email + password (any email address, no Gmail needed). Display screens and spectators need no account, only a random share link. A save-status line says where the data lives.
+- Roles are per tournament today (the logged-in owner is the organizer). Planned: groups with roles owner / organizer / member, guest players without accounts on leaderboards, a point system and group leaderboards. Not built yet.
 - Light gamification is wanted (points, ranks, streaks) while keeping a professional tone.
 
 ## Evidence on Hand
