@@ -75,7 +75,7 @@ function Display() {
               {current.map((match, i) => (
                 <div key={i} className="flex min-w-0 flex-col gap-1">
                   <p className="font-medium">{t("table", { n: i + 1 })}</p>
-                  <div className="mx-auto w-full max-w-[min(100%,38vh)]">
+                  <div className="mx-auto w-full max-w-[min(100%,30vh)]">
                     <TableGraphic match={match} name={name} large />
                   </div>
                 </div>

@@ -11,6 +11,16 @@ type Props = {
   large?: boolean;
 };
 
+function Net() {
+  return (
+    <div aria-hidden className="relative z-10 -mx-2.5 flex h-2 items-stretch">
+      <span className="w-1.5 bg-white" />
+      <span className="flex-1 border-y border-white bg-white/25" />
+      <span className="w-1.5 bg-white" />
+    </div>
+  );
+}
+
 // A vertical table: team A plays on the top half, team B on the bottom half.
 // Each half is one button ("this team won") made of two player quarters.
 export function TableGraphic({ match, name, label, onPick, large }: Props) {
@@ -20,7 +30,8 @@ export function TableGraphic({ match, name, label, onPick, large }: Props) {
   return (
     <div
       className={cn(
-        "aspect-[4/5] w-full bg-table-blue p-1.5 text-table-blue-foreground",
+        "aspect-[2/3] w-full bg-table-blue p-1.5 text-table-blue-foreground",
+        !large && "max-w-64",
         large ? "text-[clamp(0.875rem,2.2vh,2rem)]" : "text-xs",
       )}
     >
@@ -61,8 +72,8 @@ export function TableGraphic({ match, name, label, onPick, large }: Props) {
               )}
             </Half>
           );
-          // the net sits between the two halves
-          return side === 0 ? [half, <div key="net" className="h-px bg-white" />] : half;
+          // the net sits between the two halves; its posts stick out past the table edge
+          return side === 0 ? [half, <Net key="net" />] : half;
         })}
       </div>
     </div>
