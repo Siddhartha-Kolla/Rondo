@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SaveStatus } from "@/components/save-status";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/store";
 import type { CloudTournament } from "@/lib/cloud";
@@ -116,8 +115,6 @@ export function TournamentsView() {
 
   return (
     <div className="flex flex-col gap-6">
-      <SaveStatus />
-
       <form
         className="flex flex-col gap-1"
         onSubmit={(e) => {

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SaveStatus } from "@/components/save-status";
 import { useApp } from "@/lib/store";
 import type { Key } from "@/lib/i18n";
 
@@ -140,15 +139,14 @@ export function CloudSection() {
   const complete = address.trim() !== "" && password.length >= 8;
 
   return (
-    <section className="flex flex-col gap-3 border-t pt-4" aria-labelledby="cloud-heading">
-      <h2 id="cloud-heading" className="font-medium">
-        {t("cloud")}
+    <section className="flex flex-col gap-3" aria-labelledby="account-heading">
+      <h2 id="account-heading" className="font-medium">
+        {t("account")}
       </h2>
 
       {cloud.email ? (
         <>
           <p className="[overflow-wrap:anywhere]">{t("signedInAs", { email: cloud.email })}</p>
-          <SaveStatus />
           <DisplayLink />
 
           <Button

@@ -159,6 +159,9 @@ The playful elements, all built from the same square, flat parts:
 ### Earlier Rounds
 Closed by default. Each round is a bordered summary row (round name, results count) that opens to one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
 
+### Header and Account
+The header has two rows that never move: title with Open display and the language switch, then one status row with the open tournament's name and save status on the left and an Account button on the right ("Sign in" when signed out, the email when signed in). Account opens its own view instead of living inside Setup. The four tabs (Play, Standings, Tournaments when signed in, Setup) sit directly below.
+
 ### Save Status
 One line that always says where the data lives: a 8px square marker plus text. Table Blue marker for "Saved online", muted for local, saving and offline, destructive for conflict, auth and error states. A small outline button (Reload) appears only on conflict. On the display page the same marker reads Live or Offline with the time of the last update.
 

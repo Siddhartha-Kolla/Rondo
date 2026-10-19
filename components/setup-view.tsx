@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BackupSection } from "@/components/backup-section";
-import { CloudSection } from "@/components/cloud-section";
 import { Label } from "@/components/ui/label";
 import { useApp } from "@/lib/store";
 import { standings } from "@/lib/tournament";
@@ -103,8 +102,6 @@ export function SetupView() {
         />
         <p className="text-muted-foreground">{t("tablesHint")}</p>
       </section>
-
-      <CloudSection />
 
       <BackupSection />
 
