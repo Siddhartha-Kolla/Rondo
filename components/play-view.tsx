@@ -13,7 +13,7 @@ export function PlayView() {
   const current = state.rounds.at(-1);
   const decided = current ? current.filter((m) => m.winner !== null).length : 0;
   const allDecided = current ? decided === current.length : true;
-  const canStart = activeCount >= 4 && allDecided;
+  const canStart = activeCount >= 4 && allDecided && !state.finished;
 
   const sittingOut = (round: Round) => {
     const playing = playersOf(round);
@@ -53,6 +53,7 @@ export function PlayView() {
         </section>
       )}
 
+      {state.finished && <p className="text-muted-foreground">{t("finished")}</p>}
       <Button size="lg" className="w-full" disabled={!canStart} onClick={actions.startNextRound}>
         {current ? t("nextRound") : t("startFirstRound")}
       </Button>

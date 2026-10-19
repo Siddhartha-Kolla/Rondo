@@ -26,6 +26,7 @@ export function CloudSection() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [signOutBlocked, setSignOutBlocked] = useState(false);
   const [copied, setCopied] = useState(false);
 
   if (!cloud.available) return null;
@@ -76,9 +77,18 @@ export function CloudSection() {
             </div>
           )}
 
-          <Button variant="outline" className="self-start" onClick={cloud.signOut}>
+          <Button
+            variant="outline"
+            className="self-start"
+            onClick={async () => setSignOutBlocked(!(await cloud.signOut()))}
+          >
             {t("signOut")}
           </Button>
+          {signOutBlocked && (
+            <p role="alert" className="text-destructive">
+              {t("signOutUnsaved")}
+            </p>
+          )}
         </>
       ) : (
         <form

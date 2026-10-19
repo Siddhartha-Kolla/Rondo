@@ -2,7 +2,7 @@ import { detectLang, type Lang } from "./i18n";
 import type { Round } from "./tournament";
 
 export type Player = { id: string; name: string; active: boolean };
-export type State = { players: Player[]; tables: number; rounds: Round[]; lang: Lang };
+export type State = { players: Player[]; tables: number; rounds: Round[]; lang: Lang; finished?: boolean };
 
 export const emptyState: State = { players: [], tables: 2, rounds: [], lang: "en" };
 

@@ -8,7 +8,12 @@ const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 // null = cloud not configured: the app then works with browser storage only
 export const supabase = url && key ? createClient(url, key) : null;
 
-export type CloudTournament = { id: string; shareId: string; state: Partial<State>; updatedAt: string };
+export type CloudTournament = { id: string; shareId: string; name: string; state: Partial<State>; updatedAt: string };
+
+const COLUMNS = "id, share_id, name, state, updated_at";
+
+type Row = { id: string; share_id: string; name: string; state: Partial<State>; updated_at: string };
+const fromRow = (r: Row): CloudTournament => ({ id: r.id, shareId: r.share_id, name: r.name, state: r.state, updatedAt: r.updated_at });
 
 // Login with any email address: no email is sent unless the project requires confirmation
 export async function signUpWithPassword(email: string, password: string): Promise<{ error: string | null; confirm: boolean }> {
@@ -23,24 +28,26 @@ export async function signInWithPassword(email: string, password: string): Promi
   return error?.message ?? null;
 }
 
-// The signed-in organizer's most recent tournament (row-level security limits this to their own)
-export async function fetchOwnTournament(): Promise<CloudTournament | null> {
-  if (!supabase) return null;
-  const { data, error } = await supabase
-    .from("tournaments")
-    .select("id, share_id, state, updated_at")
-    .order("updated_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+// All tournaments of the signed-in organizer, newest first (row-level security limits this to their own)
+export async function listTournaments(): Promise<CloudTournament[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.from("tournaments").select(COLUMNS).order("updated_at", { ascending: false });
   if (error) throw error;
-  return data ? { id: data.id, shareId: data.share_id, state: data.state, updatedAt: data.updated_at } : null;
+  return (data as Row[]).map(fromRow);
 }
 
-export async function createTournament(state: State): Promise<CloudTournament> {
-  if (!supabase) throw new Error("cloud not configured");
-  const { data, error } = await supabase.from("tournaments").insert({ state }).select("id, share_id, state, updated_at").single();
+export async function fetchTournament(id: string): Promise<CloudTournament | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase.from("tournaments").select(COLUMNS).eq("id", id).maybeSingle();
   if (error) throw error;
-  return { id: data.id, shareId: data.share_id, state: data.state, updatedAt: data.updated_at };
+  return data ? fromRow(data as Row) : null;
+}
+
+export async function createTournament(state: State, name: string): Promise<CloudTournament> {
+  if (!supabase) throw new Error("cloud not configured");
+  const { data, error } = await supabase.from("tournaments").insert({ state, name }).select(COLUMNS).single();
+  if (error) throw error;
+  return fromRow(data as Row);
 }
 
 // Saves only if nobody changed the row since we last saw it (knownUpdatedAt).
@@ -60,6 +67,25 @@ export async function saveTournament(
   if (error) throw error;
   if (!data || data.length === 0) return { conflict: true };
   return { conflict: false, updatedAt: data[0].updated_at };
+}
+
+// Returns the new updated_at, which the caller must remember if it is the open tournament
+export async function renameTournament(id: string, name: string): Promise<string> {
+  if (!supabase) throw new Error("cloud not configured");
+  const { data, error } = await supabase
+    .from("tournaments")
+    .update({ name, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select("updated_at")
+    .single();
+  if (error) throw error;
+  return data.updated_at;
+}
+
+export async function deleteTournament(id: string): Promise<void> {
+  if (!supabase) throw new Error("cloud not configured");
+  const { error } = await supabase.from("tournaments").delete().eq("id", id);
+  if (error) throw error;
 }
 
 // What the display uses: no login, only an exact share id returns anything

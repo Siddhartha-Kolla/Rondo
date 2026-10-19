@@ -80,6 +80,7 @@ function useAppState(readOnly: boolean, shareId?: string) {
         }),
       reset: () => update((s) => ({ ...s, rounds: [] })),
       replaceAll: (next: State) => update(() => next),
+      setFinished: (finished: boolean) => update((s) => ({ ...s, finished })),
     }),
     [update],
   );

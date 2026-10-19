@@ -5,12 +5,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { PlayView } from "@/components/play-view";
 import { SetupView } from "@/components/setup-view";
 import { StandingsView } from "@/components/standings-view";
+import { TournamentsView } from "@/components/tournaments-view";
 import { displayUrl } from "@/components/cloud-section";
 import { SaveStatus } from "@/components/save-status";
 import { LANGS } from "@/lib/i18n";
 import { AppProvider, useApp } from "@/lib/store";
 
-type Tab = "play" | "standings" | "setup";
+type Tab = "play" | "standings" | "tournaments" | "setup";
 
 function Shell() {
   const { state, ready, actions, cloud, t } = useApp();
@@ -21,6 +22,7 @@ function Shell() {
   const tabs: { id: Tab; label: string }[] = [
     { id: "play", label: t("tabPlay") },
     { id: "standings", label: t("tabStandings") },
+    ...(cloud.email ? [{ id: "tournaments" as Tab, label: t("tabTournaments") }] : []),
     { id: "setup", label: t("tabSetup") },
   ];
 
@@ -48,13 +50,15 @@ function Shell() {
         </div>
       </header>
 
+      {cloud.name && <p className="font-medium [overflow-wrap:anywhere]">{cloud.name}</p>}
       <SaveStatus />
 
-      <div role="group" className="grid grid-cols-3">
+      <div role="group" className="grid" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
         {tabs.map(({ id, label }) => (
           <Button
             key={id}
             size="lg"
+            className="px-1"
             variant={tab === id ? "default" : "outline"}
             aria-pressed={tab === id}
             onClick={() => setChosen(id)}
@@ -66,6 +70,7 @@ function Shell() {
 
       {tab === "play" && <PlayView />}
       {tab === "standings" && <StandingsView />}
+      {tab === "tournaments" && cloud.email && <TournamentsView />}
       {tab === "setup" && <SetupView />}
     </main>
   );
