@@ -4,49 +4,49 @@
   "title": "Design System: Sternchenturnier",
   "extensions": {
     "colorMeta": {
-      "ink": {
-        "role": "primary",
-        "displayName": "Scoreboard Ink",
-        "canonical": "oklch(0.205 0 0)",
-        "tonalRamp": [
-          "oklch(0.15 0 0)",
-          "oklch(0.25 0 0)",
-          "oklch(0.35 0 0)",
-          "oklch(0.45 0 0)",
-          "oklch(0.6 0 0)",
-          "oklch(0.75 0 0)",
-          "oklch(0.88 0 0)",
-          "oklch(0.95 0 0)"
-        ]
-      },
       "table-blue": {
-        "role": "secondary",
+        "role": "primary",
         "displayName": "Table Blue",
-        "canonical": "oklch(0.488 0.243 264.376)",
+        "canonical": "#2F5FD0",
         "tonalRamp": [
-          "oklch(0.2 0.1 264.376)",
-          "oklch(0.3 0.16 264.376)",
-          "oklch(0.4 0.21 264.376)",
-          "oklch(0.488 0.243 264.376)",
-          "oklch(0.6 0.2 264.376)",
-          "oklch(0.72 0.14 264.376)",
-          "oklch(0.85 0.07 264.376)",
-          "oklch(0.95 0.03 264.376)"
+          "#0F1F45",
+          "#173175",
+          "#1F4199",
+          "#2F5FD0",
+          "#5B84DD",
+          "#8DA9E7",
+          "#BFCFF1",
+          "#E8EEFA"
         ]
       },
-      "chalk": {
-        "role": "neutral",
-        "displayName": "Chalk",
-        "canonical": "oklch(0.97 0 0)",
+      "ball-orange": {
+        "role": "secondary",
+        "displayName": "Ball Orange",
+        "canonical": "#D4680C",
         "tonalRamp": [
-          "oklch(0.15 0 0)",
-          "oklch(0.25 0 0)",
-          "oklch(0.4 0 0)",
-          "oklch(0.556 0 0)",
-          "oklch(0.708 0 0)",
-          "oklch(0.85 0 0)",
-          "oklch(0.922 0 0)",
-          "oklch(0.97 0 0)"
+          "#3A1C03",
+          "#6B3205",
+          "#9C4A08",
+          "#D4680C",
+          "#EC8B34",
+          "#F5AE6E",
+          "#FAD1A8",
+          "#FDEBD9"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#FAF8F4",
+        "tonalRamp": [
+          "#1E1B16",
+          "#3A352D",
+          "#6B655B",
+          "#9A9387",
+          "#C5BFB3",
+          "#E4DFD6",
+          "#F1EDE5",
+          "#FAF8F4"
         ]
       },
       "foul-red": {
@@ -68,11 +68,11 @@
     "typographyMeta": {
       "body": {
         "displayName": "Body",
-        "purpose": "Round contents, names, helper text."
+        "purpose": "Names, labels and helper text in Geist Sans."
       },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Button text and field labels."
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Ranks, stars, games, streak and times in JetBrains Mono."
       }
     },
     "shadows": [],
@@ -92,7 +92,7 @@
       "refersTo": "button-primary",
       "description": "Main action, e.g. Next round.",
       "html": "<button class=\"ds-btn-primary\">Next round</button>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 10px;border:1px solid transparent;border-radius:0;background:oklch(0.205 0 0);color:oklch(0.985 0 0);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}.ds-btn-primary:hover{background:oklch(0.205 0 0 / .8)}.ds-btn-primary:focus-visible{outline:none;border-color:oklch(0.708 0 0);box-shadow:0 0 0 1px oklch(0.708 0 0 / .5)}.ds-btn-primary:active{transform:translateY(1px)}"
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 12px;border:1px solid transparent;border-radius:0;font-family:Geist,system-ui,sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:#2F5FD0;color:#fff}.ds-btn-primary:hover{background:rgba(47,95,208,.8)}.ds-btn-primary:focus-visible{outline:none;box-shadow:0 0 0 1px #2F5FD0}.ds-btn-primary:active{transform:translateY(1px)}"
     },
     {
       "name": "Outline Button",
@@ -100,80 +100,84 @@
       "refersTo": "button-outline",
       "description": "Secondary action with a hairline border.",
       "html": "<button class=\"ds-btn-outline\">Cancel</button>",
-      "css": ".ds-btn-outline{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 10px;border:1px solid oklch(0.922 0 0);border-radius:0;background:oklch(1 0 0);color:oklch(0.145 0 0);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}.ds-btn-outline:hover{background:oklch(0.97 0 0)}.ds-btn-outline:focus-visible{outline:none;border-color:oklch(0.708 0 0)}.ds-btn-outline:active{transform:translateY(1px)}"
+      "css": ".ds-btn-outline{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 12px;border:1px solid transparent;border-radius:0;font-family:Geist,system-ui,sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:#fff;color:#1E1B16;border-color:#E4DFD6}.ds-btn-outline:hover{background:#F1EDE5}.ds-btn-outline:focus-visible{outline:none;border-color:#2F5FD0}.ds-btn-outline:active{transform:translateY(1px)}"
     },
     {
       "name": "Ghost Button",
       "kind": "button",
       "refersTo": "button-ghost",
-      "description": "Low-emphasis action; fills on hover.",
+      "description": "Low-emphasis action.",
       "html": "<button class=\"ds-btn-ghost\">Skip</button>",
-      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 10px;border:1px solid transparent;border-radius:0;background:transparent;color:oklch(0.145 0 0);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}.ds-btn-ghost:hover{background:oklch(0.97 0 0)}.ds-btn-ghost:focus-visible{outline:none;border-color:oklch(0.708 0 0)}.ds-btn-ghost:active{transform:translateY(1px)}"
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 12px;border:1px solid transparent;border-radius:0;font-family:Geist,system-ui,sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;background:transparent;color:#1E1B16}.ds-btn-ghost:hover{background:#F1EDE5}.ds-btn-ghost:focus-visible{outline:none;border-color:#2F5FD0}"
+    },
+    {
+      "name": "Initials Tile",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "24px square with a player's initials.",
+      "html": "<span class=\"ds-tile\">AB</span>",
+      "css": ".ds-tile{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:#DCE4F7;color:#1E1B16;font:500 11px JetBrains Mono,monospace}"
     },
     {
       "name": "Form Strip",
       "kind": "custom",
       "refersTo": "",
-      "description": "Last ten rounds of one player: filled = won, outlined = lost, shaded = sat out, dashed = undecided.",
-      "html": "<div class=\"ds-form\"><span class=\"ds-form-win\"></span><span class=\"ds-form-loss\"></span><span class=\"ds-form-sat\"></span><span class=\"ds-form-pending\"></span></div>",
-      "css": ".ds-form{display:flex;gap:4px}.ds-form span{width:16px;height:16px;display:block}.ds-form-win{background:oklch(0.145 0 0)}.ds-form-loss{border:1px solid oklch(0.145 0 0)}.ds-form-sat{background:oklch(0.97 0 0)}.ds-form-pending{border:1px dashed oklch(0.556 0 0)}"
+      "description": "Last ten rounds: filled = won, outlined = lost, shaded = sat out, dashed = undecided.",
+      "html": "<div class=\"ds-form\"><span class=\"w\"></span><span class=\"l\"></span><span class=\"s\"></span><span class=\"p\"></span></div>",
+      "css": ".ds-form{display:flex;gap:4px}.ds-form span{width:16px;height:16px;display:block}.ds-form .w{background:#1E1B16}.ds-form .l{border:1px solid #1E1B16}.ds-form .s{background:#F1EDE5}.ds-form .p{border:1px dashed #6B655B}"
     }
   ],
   "narrative": {
     "northStar": "The Scoreboard",
-    "overview": "The interface reads like a scoreboard bolted to the wall of a sports hall: technical, flat, square-edged, and glanceable from the next table over. Everything is set in a monospaced face, so names, numbers and pairings line up in columns and nothing competes with the one fact a player needs: where they play and with whom.\n\nColor is nearly absent. Ink on paper carries the interface, and a single blue, taken from the project's existing blue token, is reserved for the table-tennis-table graphic and the actions tied to it. Depth is never shadowed.",
+    "overview": "The interface is a scoreboard in a friendly club hall: flat, square-edged and glanceable, but warm. The structure stays crisp (square corners, 1px lines, no shadows) while colour, letters and small drawn details make it welcoming.\n\nText is a clean sans-serif; only numbers use the monospaced face so columns line up. Colour is restrained: warm paper and ink, table blue for action and the table, ball orange reserved for stars.",
     "keyCharacteristics": [
-      "Gamified through data (stars, ranks, streaks, progress), never through ornament.",
-      "Multilingual by construction: no fixed-width labels, no text baked into graphics.",
-      "Monospaced throughout; columns align, numbers scan.",
-      "Square corners on everything interactive.",
-      "Near-monochrome neutrals plus one blue accent.",
-      "Flat surfaces, hairline borders, no shadows.",
-      "Usable one-handed on a phone at the table."
+      "Sharp and flat: square corners, 1px borders, no shadows, no gradients, no emoji.",
+      "Warm paper and ink; blue for action, orange only for stars and winners.",
+      "Sans-serif for text, monospace for numbers.",
+      "Game state shown as data: stars, rank, streak, bars, initials tiles.",
+      "Short, plain wording.",
+      "Multilingual by construction.",
+      "Usable one-handed on a phone."
     ],
     "rules": [
       {
-        "name": "The One Blue Rule",
-        "body": "Table Blue is the only chromatic color on any screen, and it marks the table. If a second hue appears, it is Foul Red for an error, nothing else.",
+        "name": "The Two Accents Rule",
+        "body": "Table Blue means act or the table. Ball Orange means a star was earned. No third accent hue, except Foul Red for errors.",
         "section": "colors"
       },
       {
         "name": "The Column Rule",
-        "body": "Names and numbers that belong together share a monospaced column. Never switch to a proportional face for data.",
+        "body": "Numbers that belong together share a monospaced column. Names are never set in mono.",
         "section": "typography"
       },
       {
         "name": "The Flat-By-Default Rule",
-        "body": "Surfaces carry no shadow at rest or on hover. Hierarchy comes from tone, borders and position.",
+        "body": "Surfaces carry no shadow at rest or on hover.",
         "section": "elevation"
       },
       {
         "name": "The Square Edge Rule",
-        "body": "Controls and status labels have no rounding. Rounded shapes are reserved for the table graphic if its design calls for it.",
+        "body": "Nothing is rounded into a pill or a card. Warmth comes from colour, letters and small details.",
         "section": "shapes"
       }
     ],
     "dos": [
-      "Do use monospaced type for all names, counts and labels.",
-      "Do keep every control square-cornered (rounded-none).",
-      "Do use Table Blue only for the table graphic and its tied actions.",
-      "Do separate surfaces with Hairline borders and tone, not shadows.",
-      "Do design for a phone held in one hand at the table.",
-      "Do express game state with stars, numerals and segmented bars in the system's own style.",
-      "Do size labels to content and keep all text translatable.",
-      "Do place new elements on the existing 4px step and column structure."
+      "Do keep every control, tab, input and block square-cornered, with 1px borders.",
+      "Do use Table Blue for action and the table, and Ball Orange only for stars and the leader.",
+      "Do set names and labels in the sans face, and numbers in the monospaced face.",
+      "Do show game state as data in the system's own style.",
+      "Do keep wording short.",
+      "Do size labels to content, keep all text translatable, and place new elements on the 4px step.",
+      "Do design for a phone held in one hand."
     ],
     "donts": [
-      "Don't use emoji anywhere in the UI, including as icons or rewards.",
-      "Don't use gradients, glows or glassy effects.",
-      "Don't use borders thicker than 1px; selection and focus use tone and the 1px ring.",
-      "Don't use more than one typeface or mix weights beyond regular and medium.",
-      "Don't place elements by one-off margins or arbitrary widths; no fixed-width text boxes.",
-      "Don't bake text into images or SVG.",
-      "Don't add box-shadows.",
-      "Don't round controls or labels into pills.",
-      "Don't introduce a second accent hue; Foul Red is for errors only.",
-      "Don't mix a proportional sans into data columns."
+      "Don't use emoji, gradients, glows or shadows.",
+      "Don't use borders thicker than 1px or round controls into pills.",
+      "Don't introduce another accent hue; Foul Red is for errors only.",
+      "Don't set Ball Orange as small text.",
+      "Don't mix a proportional face into number columns.",
+      "Don't place elements by one-off margins or fixed-width text boxes.",
+      "Don't add decorative motion beyond the three authored moments."
     ]
   }
 }

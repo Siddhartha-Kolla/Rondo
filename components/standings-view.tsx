@@ -1,10 +1,12 @@
 "use client";
-import { Star } from "@phosphor-icons/react";
+import type { CSSProperties } from "react";
+import { Crown, Fire, Star } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useApp, useNames } from "@/lib/store";
 import { useState } from "react";
 import { PlayerProfile } from "@/components/player-profile";
+import { PlayerTile } from "@/components/player-tile";
 import { standings, type Standing } from "@/lib/tournament";
 
 const CELLS = 10;
@@ -20,7 +22,11 @@ function Bar({ value, max, large }: { value: number; max: number; large?: boolea
         render={<span tabIndex={0} role="img" aria-label={tip} className="flex w-fit gap-px outline-none focus-visible:ring-1 focus-visible:ring-ring" />}
       >
         {Array.from({ length: CELLS }, (_, i) => (
-          <span key={i} className={cn(large ? "h-2.5 w-4" : "h-1.5 w-2", i < filled ? "bg-foreground" : "bg-muted")} />
+          <span
+            key={i}
+            style={{ "--i": i } as CSSProperties}
+            className={cn("bar-cell", large ? "h-2.5 w-4" : "h-1.5 w-2", i < filled ? "bg-foreground" : "bg-muted")}
+          />
         ))}
       </TooltipTrigger>
       <TooltipContent>{tip}</TooltipContent>
@@ -62,12 +68,14 @@ export function StandingsTable({ rows, max, startRank = 0, large, onSelect }: Ta
           const leader = rank === 0 && row.stars > 0;
           return (
             <tr key={row.id} className="border-b">
-              <td className={cn("border-l pl-2", cell, leader ? "border-l-table-blue" : "border-l-transparent")}>
+              <td className={cn("border-l pl-2 font-mono", cell, leader ? "border-l-table-blue" : "border-l-transparent")}>
                 {String(rank + 1).padStart(2, "0")}
               </td>
               <td className={cn(cell, "min-w-0")}>
-                <div className="flex flex-col gap-1">
-                  {onSelect ? (
+                <div className="flex items-start gap-2">
+                  <PlayerTile name={name(row.id)} className="mt-0.5" />
+                  <div className="flex min-w-0 flex-col gap-1">
+                    <div className="flex items-center gap-1.5">{onSelect ? (
                     <button
                       type="button"
                       onClick={() => onSelect(row.id)}
@@ -81,17 +89,22 @@ export function StandingsTable({ rows, max, startRank = 0, large, onSelect }: Ta
                   ) : (
                     <span className={cn("[overflow-wrap:anywhere]", leader && "font-medium")}>{name(row.id)}</span>
                   )}
-                  <Bar value={row.stars} max={max} large={large} />
+                      {leader && <Crown weight="fill" aria-hidden className="size-3.5 shrink-0 text-(--star-leader)" />}
+                    </div>
+                    <Bar value={row.stars} max={max} large={large} />
+                  </div>
                 </div>
               </td>
-              <td className={cn(cell, "text-right")}>
+              <td className={cn(cell, "text-right font-mono")}>
                 <span className="inline-flex items-center gap-1">
-                  <Star weight="fill" aria-hidden className={cn(large ? "size-[1em]" : "size-3.5", leader && "text-table-blue")} />
+                  <Star weight="fill" aria-hidden className={cn(large ? "size-[1em]" : "size-3.5", leader ? "text-(--star-leader)" : "text-(--star)")} />
                   {row.stars}
                 </span>
               </td>
-              <td className={cn(cell, "text-right")}>{row.games}</td>
-              <td className={cn(cell, "text-right", large && "pr-0")}>{row.streak}</td>
+              <td className={cn(cell, "text-right font-mono")}>{row.games}</td>
+              <td className={cn(cell, "text-right font-mono", large && "pr-0")}>{row.streak >= 3 && <Fire weight="fill" aria-hidden className="mr-1 size-3.5 align-[-2px] text-(--star)" />}
+                {row.streak}
+              </td>
             </tr>
           );
         })}

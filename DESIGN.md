@@ -1,54 +1,67 @@
 ---
 name: Sternchenturnier
-description: A square-edged, monospaced, near-monochrome tournament scoreboard with a single table-tennis blue accent.
+description: A sharp, warm tournament scoreboard in a friendly sans-serif, with table blue for action and ball orange for stars.
 colors:
-  ink: "oklch(0.205 0 0)"
-  paper: "oklch(1 0 0)"
-  page-text: "oklch(0.145 0 0)"
-  chalk: "oklch(0.97 0 0)"
-  hairline: "oklch(0.922 0 0)"
-  muted-text: "oklch(0.556 0 0)"
-  focus-ring: "oklch(0.708 0 0)"
-  table-blue: "oklch(0.488 0.243 264.376)"
+  paper: "#FAF8F4"
+  card: "#FFFFFF"
+  ink: "#1E1B16"
+  chalk: "#F1EDE5"
+  hairline: "#E4DFD6"
+  muted-text: "#6B655B"
+  table-blue: "#2F5FD0"
+  ball-orange: "#D4680C"
+  court-amber: "#FFC266"
   foul-red: "oklch(0.577 0.245 27.325)"
-  night-paper: "oklch(0.145 0 0)"
-  night-card: "oklch(0.205 0 0)"
-  night-text: "oklch(0.985 0 0)"
+  night-paper: "#10141C"
+  night-card: "#171C26"
+  night-ink: "#EDEAE4"
+  night-hairline: "#2A3140"
+  night-blue: "#3F6FE3"
+  night-orange: "#F5A04A"
 typography:
   body:
-    fontFamily: "JetBrains Mono, ui-monospace, monospace"
-    fontSize: "0.75rem"
+    fontFamily: "Geist, system-ui, sans-serif"
+    fontSize: "0.875rem"
     fontWeight: 400
-  label:
-    fontFamily: "JetBrains Mono, ui-monospace, monospace"
-    fontSize: "0.75rem"
+    lineHeight: 1.43
+  title:
+    fontFamily: "Geist, system-ui, sans-serif"
+    fontSize: "1rem"
     fontWeight: 500
+    lineHeight: 1.5
+  label:
+    fontFamily: "Geist, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 500
+  numeral:
+    fontFamily: "JetBrains Mono, ui-monospace, monospace"
+    fontSize: "0.875rem"
+    fontWeight: 400
 rounded:
   none: "0"
-  base: "0.625rem"
 spacing:
   xs: "4px"
   sm: "8px"
   md: "16px"
 components:
   button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.chalk}"
+    backgroundColor: "{colors.table-blue}"
+    textColor: "#FFFFFF"
     rounded: "{rounded.none}"
-    height: "32px"
-    padding: "0 10px"
+    height: "40px"
+    padding: "0 12px"
   button-outline:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.page-text}"
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.none}"
-    height: "32px"
-    padding: "0 10px"
+    height: "40px"
+    padding: "0 12px"
   button-ghost:
     backgroundColor: "{colors.paper}"
-    textColor: "{colors.page-text}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.none}"
-    height: "32px"
-    padding: "0 10px"
+    height: "40px"
+    padding: "0 12px"
 ---
 
 # Design System: Sternchenturnier
@@ -57,140 +70,133 @@ components:
 
 **Creative North Star: "The Scoreboard"**
 
-The interface reads like a scoreboard bolted to the wall of a sports hall: technical, flat, square-edged, and glanceable from the next table over. Everything is set in a monospaced face, so names, numbers and pairings line up in columns and nothing competes with the one fact a player needs: where they play and with whom. The system is a tool first. It is built on the stock shadcn "lyra" preset (neutral base, square controls), so its character comes from restraint and alignment, not decoration.
+The interface is a scoreboard in a friendly club hall: flat, square-edged and glanceable, but warm. Everything keeps the crisp structure of a scoreboard (square corners, 1px lines, no shadows), while the colour, the letters and a few small drawn details make it welcoming for people who just want a good evening of table tennis.
 
-Color is nearly absent. Ink on paper carries the interface, and a single blue, taken from the project's existing blue token, is reserved for the table-tennis-table graphic and the actions tied to it. Depth is never shadowed: surfaces are flat and separated by hairlines and tone.
-
-It is professional first and playful second. The playfulness is structural, not decorative: points, ranks and streaks are the game layer, shown as stars (a nod to "Sternchen"), counters and segmented bars drawn in the same square, single-weight vocabulary as the rest of the interface. Nothing bounces, glows or cartoons. The app also ships in several languages, so layout must survive text that is 30% longer than English.
+The text is a clean sans-serif, and only numbers (ranks, stars, games, streaks) use the monospaced face so that columns line up. Colour is restrained: warm paper and ink, one table blue for action and for the table, and ball orange reserved for stars. The game layer is played through data and small details, never through ornament: stars, initials tiles, a crown, a flame, and a few short moments of motion.
 
 **Key Characteristics:**
-- Gamified through data (stars, ranks, streaks, progress), never through ornament.
-- Multilingual by construction: no fixed-width labels, no text baked into graphics.
-- Monospaced throughout; columns align, numbers scan.
-- Square corners on everything interactive (see The Square Edge Rule).
-- Near-monochrome neutrals plus one blue accent.
-- Flat surfaces, hairline borders, no shadows.
-- Usable one-handed on a phone at the table.
+- Sharp and flat: square corners, 1px borders, no shadows, no gradients, no emoji.
+- Warm paper and ink; blue for action, orange only for stars and winners.
+- Sans-serif for text, monospace for numbers.
+- Game state shown as data: stars, rank, streak, segmented bars, initials tiles.
+- Short, plain wording; no explanatory text where the interface already says it.
+- Multilingual by construction: labels size to content, no fixed-width text.
+- Usable one-handed on a phone: 40px controls, 44px tabs.
 
 ## Colors
 
-A grayscale scoreboard with one sharp blue. Values are the shadcn neutral tokens already in `app/globals.css`; the dark theme swaps the neutrals and keeps the blue.
+Warm neutrals with two accents. Values are the tokens in `app/globals.css`; the dark theme uses a navy-gray ground.
 
 ### Primary
-- **Scoreboard Ink** (oklch(0.205 0 0)): The primary action fill and strong text on light surfaces. In dark mode the primary role flips to a light gray (oklch(0.922 0 0)).
+- **Table Blue** (#2F5FD0): primary buttons, the table graphic, focus ring, and the 1px rule marking the leader's row. Slightly lighter in dark mode (#3F6FE3).
 
 ### Secondary
-- **Table Blue** (oklch(0.488 0.243 264.376)): The only chromatic accent. Used for the table graphic, its selectable quarters, and the primary action tied to a round. Taken from the existing `--sidebar-primary` dark-mode token, the only blue the project defines. Not yet wired into the light theme; adopting it there is an implementation decision.
+- **Ball Orange** (#D4680C): stars on paper (standings, earlier rounds, profile), the crown on the leader. Use for icons and fills only, never for small text. Brighter in dark mode (#F5A04A).
+- **Court Amber** (#FFC266): the winner's star on the blue table, where deeper orange would not stand out.
 
 ### Neutral
-- **Paper** (oklch(1 0 0)): Page and card background in light mode.
-- **Page Text** (oklch(0.145 0 0)): Body text; also the dark-mode page background (Night Paper).
-- **Chalk** (oklch(0.97 0 0)): Muted, secondary and accent surfaces; hover fills.
-- **Hairline** (oklch(0.922 0 0)): Borders and dividers; in dark mode a 10% white line.
-- **Muted Text** (oklch(0.556 0 0)): Secondary labels such as the "Sitting out" line.
-- **Focus Ring** (oklch(0.708 0 0)): Keyboard focus.
-- **Foul Red** (oklch(0.577 0.245 27.325)): Destructive actions and invalid states only.
-- **Night Card** (oklch(0.205 0 0)) and **Night Text** (oklch(0.985 0 0)): Dark-mode card and text.
+- **Paper** (#FAF8F4): page background.
+- **Card** (#FFFFFF): inputs, outline buttons, bordered blocks.
+- **Ink** (#1E1B16): text and the filled cells of the standings bar.
+- **Chalk** (#F1EDE5): muted and hover surfaces, winning row, initials tile base.
+- **Hairline** (#E4DFD6): borders and dividers.
+- **Muted Text** (#6B655B): secondary text (5.4:1 on paper).
+- **Foul Red**: destructive actions and errors only.
 
 ### Named Rules
-**The One Blue Rule.** Table Blue is the only chromatic color on any screen, and it marks the table. If a second hue appears, it is Foul Red for an error, nothing else.
+**The Two Accents Rule.** Table Blue means "act" or "the table". Ball Orange means "a star was earned". No third accent hue appears, except Foul Red for errors.
 
 ## Typography
 
-**Display Font:** JetBrains Mono (with ui-monospace fallback)
-**Body Font:** JetBrains Mono
-**Label/Mono Font:** JetBrains Mono
+**Text Font:** Geist Sans (with system-ui fallback)
+**Numeral Font:** JetBrains Mono
 
-**Character:** One monospaced family for everything. It gives the app its scoreboard voice and lets columns of names and counts align without extra layout work. Geist Sans is loaded as `--font-geist-sans` but the root applies the mono face; treat sans as unused.
+**Character:** Plain and friendly letters for names and labels, with a technical monospaced voice reserved for the numbers.
 
 ### Hierarchy
-- **Body** (400, 0.75rem, default line-height): Round contents, names, helper text.
-- **Label** (500, 0.75rem): Button text and field labels.
-- Larger display and headline sizes are not yet defined in the code; add them when a surface needs them rather than inventing them here.
+- **Body** (400, 0.875rem, 1.43): lists, helper text, table labels.
+- **Title** (500, 1rem): the app name and section headings.
+- **Label** (500, 0.875rem): buttons and field labels.
+- **Numeral** (mono, tabular): rank, stars, games, streak, times.
 
 ### Named Rules
-**The Column Rule.** Names and numbers that belong together share a monospaced column. Never switch to a proportional face for data.
+**The Column Rule.** Numbers that belong together share a monospaced column. Names are never set in mono.
 
 ## Layout
 
-No grid or container system exists yet. The home page is a single centered flex column (`flex flex-col items-center justify-center`) with a controls strip above a stack of rounds; each round is a row of table matches with a smaller line beneath it. Spacing uses the Tailwind 4px step (`gap-1`, `gap-2`, `mb-2`, `mb-4`).
+A single centered column (max 48rem) with a 16px side gutter, built on the 4px step. A header block comes first: title with Open display and the language switch, then one status row (tournament name and save status on the left, Account button on the right). The tabs follow, then the content. Related items sit close (gap 4 to 8px); groups are separated by 16px and a hairline.
 
-Product direction for the next surfaces: phone-first, one-handed at the table, with the table graphic and round list as the primary content. Exact breakpoints are not yet set.
+**Layout is rule-based.** New elements join an existing row or column; they never get one-off margins or fixed widths. Labels size to their content and wrap, and allow about 30% growth for German.
 
-**Layout is rule-based, not improvised.** Every screen uses the 4px step scale, one content column on phone, and left-aligned data columns. Spacing between related items is `gap-1` or `gap-2`, between groups `gap-4`. A new element joins an existing row or column; it does not invent its own position.
-
-**Multilingual.** Labels size to their content (min-width, never a fixed width such as `w-24`), wrap rather than truncate player-facing text, and allow roughly 30% growth for German. All strings come from a translation table; no text is embedded in images or SVG. The language is set on `<html lang>`. JetBrains Mono covers Latin, Cyrillic and Greek; a CJK language would need a fallback face, decided when one is added.
+**Multilingual.** All text comes from the translation table; none is baked into graphics. The document language follows the chosen language.
 
 ## Elevation & Depth
 
-Flat by default. No box-shadows are used anywhere. Depth is expressed with tone (Paper against Chalk) and hairline borders. The only feedback is state-based: a 1px press translate on buttons, and a focus ring.
+Flat. No shadows anywhere. Depth is tone (Paper against Card and Chalk) and 1px hairlines. State feedback is a 1px press and a 1px focus ring.
 
 ### Named Rules
-**The Flat-By-Default Rule.** Surfaces carry no shadow at rest or on hover. Hierarchy comes from tone, borders and position.
+**The Flat-By-Default Rule.** Surfaces carry no shadow at rest or on hover.
 
 ## Shapes
 
-Square, crisp edges on all interactive elements: buttons use `rounded-none`. The preset also defines a radius token (0.625rem, with 0.6x to 2.6x multiples) for cards and fields; use it for large containers only when needed, never on controls. The current round boxes in `app/page.tsx` use fully rounded pills; that is a placeholder to be replaced, not part of the system.
+Square and crisp: every control, tab, input, block and the table graphic has square corners. Borders are never thicker than 1px.
 
 ### Named Rules
-**The Square Edge Rule.** Controls and status labels have no rounding. Rounded shapes are reserved for the table graphic if its design calls for it.
+**The Square Edge Rule.** Nothing is rounded into a pill or a card. Warmth comes from colour, letters and small details, not from soft corners.
 
 ## Components
 
 ### Buttons
-Tactile and confident, but quiet.
-- **Shape:** Square corners (0), 1px transparent border, 32px tall by default, 10px side padding, 12px medium-weight label.
-- **Primary:** Scoreboard Ink fill with Chalk-white text; hover lightens to 80% opacity.
-- **Outline:** Paper fill with a Hairline border; hover fills with Chalk.
-- **Ghost:** No fill; hover fills with Chalk.
-- **Hover / Focus / Active:** Color fade on `transition-all`; focus shows a 1px ring in Focus Ring at 50%; press nudges down 1px; disabled fades to 50%.
-- Also available: secondary, destructive, link, and size variants (xs, sm, lg, icon).
+Confident and quiet.
+- **Shape:** square, 40px tall (44px for tabs, 36px small), 12px side padding, 14px medium label.
+- **Primary:** Table Blue fill, white text; hover 80% opacity.
+- **Outline:** Card fill with a Hairline border; hover Chalk.
+- **Ghost:** no fill; hover Chalk.
+- **States:** 1px focus ring in the blue ring colour, 1px press, disabled at 50%.
 
-### Game Layer (planned)
-The playful elements, all built from the same square, flat parts:
-- **Stars:** one filled star per point won, drawn as an inline SVG or a Phosphor icon (the project's icon library), in Ink; Table Blue only for the current leader. Stars are glyphs in the system's style, never emoji.
-- **Rank:** a monospaced numeral in a fixed-width column (`01`, `02`), leader row marked with a 1px Table Blue left rule.
-- **Progress / streak:** segmented bars made of square cells separated by 1px gaps, filled with Ink; no rounded caps, no gradients.
-- **Feedback:** a result entry changes the row state instantly (fill from Paper to Chalk, star appears). Motion is limited to a short fade; no bounce, confetti or glow.
+### Initials Tile
+A 24px square with the player's initials (mono, 11px) beside names in the standings and the profile. Four soft tints (blue, orange, chalk, deeper blue) chosen from the name, so a person keeps the same tile.
 
-### Display (monitor view)
-`/display` is a read-only screen for a monitor or TV in a second window. Same square, flat vocabulary at a larger scale: type sized from viewport height, standings in pages of eight rows, and the current round's tables, alternating every 15 seconds. A small square Table Blue marker labels it live. Its only control is Fullscreen.
+### Icons
+Drawn Phosphor icons only: a paddle before each table label, a filled crown on the leader, a flame beside a streak of three or more, a filled star for every win. No emoji.
 
-### Earlier Rounds
-Closed by default. Each round is a bordered summary row (round name, results count) that opens to one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
+### Motion
+Three short moments, all switched off for reduced-motion users: a 180ms pop when a winner's star appears, a 240ms staggered fill of the standings bar cells, and a single gentle pulse on "Next round" when every table is decided.
+
+### Table Graphic
+A blue table in 2:3 proportion with a white court edge and center line, a net with posts, and the two teams' names in the four serve boxes. Each half is a "this team won" button. The winner keeps a Court Amber star; the other half is dimmed. Capped at 16rem wide.
 
 ### Header and Account
-The header has two rows that never move: title with Open display and the language switch, then one status row with the open tournament's name and save status on the left and an Account button on the right ("Sign in" when signed out, the email when signed in). Account opens its own view instead of living inside Setup. The four tabs (Play, Standings, Tournaments when signed in, Setup) sit directly below.
+Two rows that never move: title with Open display and the language switch, then a status row with the open tournament's name and save status on the left and an Account button on the right ("Sign in", or the email once signed in). Account opens its own view. The tabs (Play, Standings, Tournaments when signed in, Setup) sit directly below.
 
 ### Save Status
-One line that always says where the data lives: a 8px square marker plus text. Table Blue marker for "Saved online", muted for local, saving and offline, destructive for conflict, auth and error states. A small outline button (Reload) appears only on conflict. On the display page the same marker reads Live or Offline with the time of the last update.
+One line that says where the data lives: an 8px square marker plus text. Blue marker for "Saved online", muted for local, saving and offline, destructive for conflict, auth and error. A small outline button (Reload) appears only on conflict.
+
+### Display (monitor view)
+`/display` is a read-only screen for a monitor or TV. The same vocabulary at larger scale: type sized from the viewport height, standings in pages of eight rows, alternating every 15 seconds with the current round's tables. A small square marker reads Live or Offline with the time of the last update; its only control is Fullscreen.
+
+### Earlier Rounds
+Closed by default. Each round is a bordered summary row (name and results count) that opens into one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
 
 ### Player Profile
-Opened by tapping a name in Standings (read-only display windows show plain names). An inline view with a Back button, not a modal. Plain bordered lists: a summary list, a form strip of ten 16px square cells (filled = won, outlined = lost, shaded = sat out, dashed = undecided, each with a tooltip), partner and opponent lists with games and wins, and a match log whose won rows are shaded and starred.
-
-### Table Match (provisional)
-The current implementation shows each match as "Table N: A & B vs C & D" in a pill with a Chalk fill. This is a placeholder pending the table-graphic design.
+Opened by tapping a name in Standings (display windows show plain names). An inline view with a Back button. A summary list, a form strip of ten 16px square cells (filled = won, outlined = lost, shaded = sat out, dashed = undecided, each with a tooltip), partner and opponent lists with games and wins, and a match log whose won rows are shaded and starred.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** use monospaced type for all names, counts and labels.
-- **Do** keep every control square-cornered (`rounded-none`).
-- **Do** use Table Blue only for the table graphic and its tied actions.
-- **Do** separate surfaces with Hairline borders and tone, not shadows.
+- **Do** keep every control, tab, input and block square-cornered, with 1px borders.
+- **Do** use Table Blue for action and the table, and Ball Orange only for stars and the leader.
+- **Do** set names and labels in the sans face, and numbers in the monospaced face.
+- **Do** show game state as data (stars, rank, streak, bars, tiles) in the system's own style.
+- **Do** keep wording short; leave out text the interface already makes clear.
+- **Do** size labels to content, keep all text translatable, and place new elements on the 4px step and existing columns.
 - **Do** design for a phone held in one hand at the table.
-- **Do** express game state with stars, numerals and segmented bars in the system's own style.
-- **Do** size labels to content and keep all text translatable.
-- **Do** place new elements on the existing 4px step and column structure.
 
 ### Don't:
-- **Don't** use emoji anywhere in the UI, including as icons or rewards.
-- **Don't** use gradients, glows or glassy effects.
-- **Don't** use borders thicker than 1px; selection and focus use tone and the 1px ring, not heavy outlines.
-- **Don't** use more than one typeface or mix weights beyond regular and medium.
-- **Don't** place elements by one-off margins or arbitrary widths; no fixed-width text boxes.
-- **Don't** bake text into images or SVG.
-- **Don't** add box-shadows.
-- **Don't** round controls or labels into pills.
-- **Don't** introduce a second accent hue; Foul Red is for errors only.
-- **Don't** mix a proportional sans into data columns.
+- **Don't** use emoji, gradients, glows or shadows.
+- **Don't** use borders thicker than 1px or round controls into pills.
+- **Don't** introduce another accent hue; Foul Red is for errors only.
+- **Don't** set Ball Orange as small text; use it for icons and fills.
+- **Don't** mix a proportional face into number columns.
+- **Don't** place elements by one-off margins or fixed-width text boxes, or bake text into images.
+- **Don't** add decorative motion beyond the three authored moments.

@@ -34,7 +34,6 @@ export function BackupSection() {
       <h2 id="backup-heading" className="font-medium">
         {t("backup")}
       </h2>
-      <p className="text-muted-foreground">{t("backupHint")}</p>
       <div className="flex gap-2">
         <Button variant="outline" onClick={download}>
           {t("downloadBackup")}

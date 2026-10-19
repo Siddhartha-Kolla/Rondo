@@ -9,7 +9,7 @@ export type { Player } from "./repository";
 
 const newId = () => `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
-// readOnly is for the display window: it follows the operator's window and never writes
+// readOnly is for the display window: it follows the operator's window and never writes.
 function useAppState(readOnly: boolean, shareId?: string) {
   const [state, setState] = useState<State>(emptyState);
   const [ready, setReady] = useState(false);

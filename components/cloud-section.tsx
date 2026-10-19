@@ -53,16 +53,14 @@ function DisplayLink() {
           {copied ? t("copied") : t("copy")}
         </Button>
       </div>
-      <p className="text-muted-foreground">{t("displayLinkHint")}</p>
       <div className="flex flex-wrap gap-2 pt-1">
-        <Button variant="outline" onClick={cloud.newShareLink}>
+        <Button variant="outline" title={t("newLinkHint")} onClick={cloud.newShareLink}>
           {t("newLink")}
         </Button>
         <Button variant="outline" onClick={() => cloud.setLinkEnabled(false)}>
           {t("linkOff")}
         </Button>
       </div>
-      <p className="text-muted-foreground">{t("newLinkHint")}</p>
     </div>
   );
 }

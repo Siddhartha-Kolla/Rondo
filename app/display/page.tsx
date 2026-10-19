@@ -83,9 +83,11 @@ function Display() {
                 </div>
               ))}
             </div>
-            <p className="text-muted-foreground">
-              {t("sittingOut")}: {sitting.join(", ") || t("nobody")}
-            </p>
+            {sitting.length > 0 && (
+              <p className="text-muted-foreground">
+                {t("sittingOut")}: {sitting.join(", ")}
+              </p>
+            )}
           </div>
         ) : rows.length === 0 || state.rounds.length === 0 ? (
           <p className="text-muted-foreground">{t("noGamesYet")}</p>

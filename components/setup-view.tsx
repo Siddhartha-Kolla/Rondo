@@ -45,12 +45,11 @@ export function SetupView() {
         >
           <Label htmlFor="new-players">{t("addPlayers")}</Label>
           <div className="flex gap-2">
-            <Input id="new-players" maxLength={200} value={draft} onChange={(e) => setDraft(e.target.value)} autoComplete="off" />
+            <Input id="new-players" maxLength={200} placeholder={t("addPlayersHint")} value={draft} onChange={(e) => setDraft(e.target.value)} autoComplete="off" />
             <Button type="submit" disabled={!draft.trim()}>
               {t("add")}
             </Button>
           </div>
-          <p className="text-muted-foreground">{t("addPlayersHint")}</p>
         </form>
 
         <ul className="flex flex-col gap-2">
@@ -100,7 +99,6 @@ export function SetupView() {
           onChange={(e) => actions.setTables(Number(e.target.value))}
           className="w-24"
         />
-        <p className="text-muted-foreground">{t("tablesHint")}</p>
       </section>
 
       <BackupSection />

@@ -1,6 +1,7 @@
 "use client";
 import { Star } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import { PlayerTile } from "@/components/player-tile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useApp, useNames } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -64,7 +65,10 @@ export function PlayerProfile({ playerId, onBack }: { playerId: string; onBack: 
         <Button variant="outline" onClick={onBack}>
           {t("back")}
         </Button>
-        <h2 className="min-w-0 text-sm font-medium [overflow-wrap:anywhere]">{name(playerId)}</h2>
+        <div className="flex min-w-0 items-center gap-2">
+          <PlayerTile name={name(playerId)} />
+          <h2 className="min-w-0 text-sm font-medium [overflow-wrap:anywhere]">{name(playerId)}</h2>
+        </div>
       </div>
 
       {h.games === 0 && h.log.length === 0 ? (
@@ -76,7 +80,7 @@ export function PlayerProfile({ playerId, onBack }: { playerId: string; onBack: 
               <div key={label} className={cn("flex items-baseline justify-between gap-4 px-3 py-2", i > 0 && "border-t")}>
                 <dt className="text-muted-foreground">{label}</dt>
                 <dd className="flex items-center gap-1 font-medium">
-                  {i === 0 && <Star weight="fill" aria-hidden className="size-3.5" />}
+                  {i === 0 && <Star weight="fill" aria-hidden className="size-3.5 text-(--star)" />}
                   {value}
                 </dd>
               </div>
@@ -116,7 +120,7 @@ export function PlayerProfile({ playerId, onBack }: { playerId: string; onBack: 
               {h.log.map((entry, i) => (
                 <li key={entry.round} className={cn("flex items-start gap-3 px-3 py-2", i > 0 && "border-t", entry.won ? "bg-muted" : "")}>
                   <span className="flex size-4 shrink-0 items-center justify-center">
-                    {entry.won && <Star weight="fill" aria-label={t("winnerOfMatch")} className="size-4" />}
+                    {entry.won && <Star weight="fill" aria-label={t("winnerOfMatch")} className="size-4 text-(--star)" />}
                   </span>
                   <div className="min-w-0 [overflow-wrap:anywhere]">
                     <p className="text-muted-foreground">

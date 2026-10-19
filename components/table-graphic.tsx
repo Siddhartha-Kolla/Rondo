@@ -67,7 +67,7 @@ export function TableGraphic({ match, name, label, onPick, large }: Props) {
                 <Star
                   weight="fill"
                   aria-hidden
-                  className={cn("absolute left-1/2 -translate-x-1/2", large ? "size-[1.4em]" : "size-4", side === 0 ? "top-1" : "bottom-1")}
+                  className={cn("star-pop absolute left-1/2 -translate-x-1/2 text-(--star-table)", large ? "size-[1.4em]" : "size-4", side === 0 ? "top-1" : "bottom-1")}
                 />
               )}
             </Half>

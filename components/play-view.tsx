@@ -1,5 +1,5 @@
 "use client";
-import { Star } from "@phosphor-icons/react";
+import { PingPong, Star } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TableGraphic } from "@/components/table-graphic";
@@ -36,7 +36,10 @@ export function PlayView() {
           <div className="grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-4">
             {current.map((match, index) => (
               <div key={index} className="flex flex-col gap-1">
-                <p className="font-medium">{t("table", { n: index + 1 })}</p>
+                <p className="flex items-center gap-1.5 font-medium">
+                  <PingPong aria-hidden className="size-4" />
+                  {t("table", { n: index + 1 })}
+                </p>
                 <TableGraphic
                   match={match}
                   name={name}
@@ -47,14 +50,16 @@ export function PlayView() {
             ))}
           </div>
 
-          <p className="text-muted-foreground">
-            {t("sittingOut")}: {sittingOut(current).join(", ") || t("nobody")}
-          </p>
+          {sittingOut(current).length > 0 && (
+            <p className="text-muted-foreground">
+              {t("sittingOut")}: {sittingOut(current).join(", ")}
+            </p>
+          )}
         </section>
       )}
 
       {state.finished && <p className="text-muted-foreground">{t("finished")}</p>}
-      <Button size="lg" className="w-full" disabled={!canStart} onClick={actions.startNextRound}>
+      <Button size="lg" className={cn("w-full", current && canStart && "next-ready")} disabled={!canStart} onClick={actions.startNextRound}>
         {current ? t("nextRound") : t("startFirstRound")}
       </Button>
 
@@ -91,7 +96,7 @@ export function PlayView() {
                             )}
                           >
                             <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center">
-                              {won && <Star weight="fill" aria-label={t("winnerOfMatch")} className="size-4" />}
+                              {won && <Star weight="fill" aria-label={t("winnerOfMatch")} className="size-4 text-(--star)" />}
                             </span>
                             <span className="min-w-0">{team.map(name).join(" & ")}</span>
                           </p>
@@ -100,9 +105,11 @@ export function PlayView() {
                     </div>
                   ))}
                 </div>
-                <p className="mt-2 text-muted-foreground">
-                  {t("sittingOut")}: {sittingOut(round).join(", ") || t("nobody")}
-                </p>
+                {sittingOut(round).length > 0 && (
+                  <p className="mt-2 text-muted-foreground">
+                    {t("sittingOut")}: {sittingOut(round).join(", ")}
+                  </p>
+                )}
               </details>
             ))}
         </section>

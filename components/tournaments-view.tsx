@@ -128,7 +128,6 @@ export function TournamentsView() {
           <Input id="new-tournament" value={name} maxLength={80} autoComplete="off" onChange={(e) => setName(e.target.value)} />
           <Button type="submit">{t("create")}</Button>
         </div>
-        <p className="text-muted-foreground">{t("newTournamentHint")}</p>
       </form>
 
       <h2 className="font-medium">{t("yourTournaments")}</h2>
