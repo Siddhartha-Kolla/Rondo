@@ -12,7 +12,7 @@ export function CloudSection() {
   const { cloud, t } = useApp();
   const [address, setAddress] = useState("");
   const [copied, setCopied] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<string | null>(null);
 
   if (!cloud.available) return null;
 
@@ -63,7 +63,7 @@ export function CloudSection() {
           className="flex flex-col gap-1"
           onSubmit={async (e) => {
             e.preventDefault();
-            setFailed(!(await cloud.signIn(address.trim())));
+            setFailed(await cloud.signIn(address.trim()));
           }}
         >
           <p className="text-muted-foreground">{t("cloudHint")}</p>
@@ -82,7 +82,11 @@ export function CloudSection() {
             </Button>
           </div>
           {cloud.linkSent && <p role="status">{t("linkSent")}</p>}
-          {failed && <p role="alert" className="text-destructive">{t("saveFailed")}</p>}
+          {failed && (
+            <p role="alert" className="text-destructive [overflow-wrap:anywhere]">
+              {t("signInFailed")}: {failed}
+            </p>
+          )}
         </form>
       )}
     </section>

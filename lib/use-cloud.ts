@@ -79,12 +79,13 @@ export function useCloudSync(state: State, ready: boolean, replaceState: (s: Sta
     return () => clearTimeout(timer);
   }, [state, tournament]);
 
-  const signIn = useCallback(async (address: string) => {
-    if (!supabase) return false;
+  // Returns null on success, otherwise the reason the login email could not be sent
+  const signIn = useCallback(async (address: string): Promise<string | null> => {
+    if (!supabase) return "Cloud is not configured";
     const redirect = window.location.href.split("#")[0].split("?")[0];
     const { error } = await supabase.auth.signInWithOtp({ email: address, options: { emailRedirectTo: redirect } });
     setLinkSent(!error);
-    return !error;
+    return error ? error.message : null;
   }, []);
 
   const signOut = useCallback(async () => {
