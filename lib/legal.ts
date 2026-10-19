@@ -1,5 +1,18 @@
 import type { Lang } from "./i18n";
 
+// ---------------------------------------------------------------------------
+// FILL THIS IN ONCE. These values are inserted everywhere in the texts below.
+// While any value is still in [square brackets], the page shows a draft warning;
+// when none are left, the warning disappears by itself.
+// ---------------------------------------------------------------------------
+export const OPERATOR = {
+  name: "Siddhartha", // who runs the service
+  email: "sentrdigital@gmail.com", // published contact address
+  hosting: "GitHub Pages", // where the website files are served from
+  region: "Supabase EU region", // Project Settings > General in Supabase
+  months: "12", // months without login before an inactive account may be deleted
+};
+
 // Bump this whenever the text changes in a way users must accept again.
 // It is stored with each new account as proof of what was accepted, and when.
 export const TERMS_VERSION = "2026-10-19";
@@ -18,7 +31,7 @@ const en: LegalText = {
   title: "Terms of Use and Privacy Notice",
   version: `Version ${TERMS_VERSION}`,
   draftNotice:
-    "DRAFT: replace every [placeholder in brackets] with your real details and have the text reviewed by a qualified person before you publish it. It is a starting point, not legal advice.",
+    "DRAFT: replace every [placeholder in brackets] with your real details and have the text reviewed by a qualified person before you publish it. It is a starting point, not legal advice. If the project grows, becomes commercial or is offered to the general public, you may need to add a postal address (or a club address) and an Impressum.",
   summaryTitle: "Why you are reading this: the short version",
   summary: [
     "Sternchenturnier is a small tool to organise table tennis tournaments: it pairs players, records winners and shows rankings.",
@@ -32,8 +45,8 @@ const en: LegalText = {
     {
       heading: "1. Who is responsible",
       paragraphs: [
-        "The service is operated by [your full name or organisation], [street and number], [postcode and city], [country]. Contact for all questions about this service and your data: [email address].",
-        "This person or organisation is the controller for the personal data described here (Art. 4(7) GDPR).",
+        "Sternchenturnier is a free, non-commercial hobby project. It is operated by {{name}}. Contact for all questions about this service and your data: {{email}}.",
+        "This person is the controller for the personal data described here (Art. 4(7) GDPR). The service is run privately and without any intention to make a profit; it does not sell anything and shows no advertising.",
       ],
     },
     {
@@ -43,7 +56,7 @@ const en: LegalText = {
         "Account data: your email address, a password hash (never the password itself), the time of registration and last login, your IP address and browser information in security logs kept by Supabase, and a record of when you accepted these terms and which version. Purpose: creating and securing your account. Legal basis: performing the contract you enter by registering (Art. 6(1)(b) GDPR) and our legitimate interest in security and abuse prevention (Art. 6(1)(f) GDPR).",
         "Tournament data: tournament names, player names, whether a player is active, rounds, pairings, winners, number of tables and the interface language. Purpose: providing the tournament functions, saving them online and showing them on display screens. Legal basis: Art. 6(1)(b) GDPR for you as organiser.",
         "Data in your browser: your login session, a working copy of the open tournament, which tournament was open, and your language. This is stored in the browser's local storage and is strictly necessary for the service you asked for. We use no advertising, no tracking and no analytics, so no consent banner is needed for it.",
-        "Hosting data: the website itself is delivered by [hosting provider, for example GitHub Pages], which may log technical connection data such as your IP address when you load a page. We have no access to or control over these logs beyond the provider's own settings.",
+        "Hosting data: the website itself is delivered by {{hosting}}, which may log technical connection data such as your IP address when you load a page. We have no access to or control over these logs beyond the provider's own settings.",
       ],
     },
     {
@@ -65,8 +78,8 @@ const en: LegalText = {
     {
       heading: "5. Service providers and transfers",
       paragraphs: [
-        "Accounts, the database and live updates are provided by Supabase. We have a data processing agreement with Supabase under Art. 28 GDPR. Our project is hosted in the region [EU region, for example Frankfurt (eu-central-1)]. Supabase and its sub-processors may process data outside the EU or EEA; where this happens it is covered by appropriate safeguards such as the EU Standard Contractual Clauses or the EU-US Data Privacy Framework.",
-        "The website files are hosted by [hosting provider]. We do not sell your data and do not pass it on for advertising.",
+        "Accounts, the database and live updates are provided by Supabase. We have a data processing agreement with Supabase under Art. 28 GDPR. Our project is hosted in the region {{region}}. Supabase and its sub-processors may process data outside the EU or EEA; where this happens it is covered by appropriate safeguards such as the EU Standard Contractual Clauses or the EU-US Data Privacy Framework.",
+        "The website files are hosted by {{hosting}}. We do not sell your data and do not pass it on for advertising.",
       ],
     },
     {
@@ -76,14 +89,14 @@ const en: LegalText = {
         "Tournaments: until you delete them or your account. Deleting an account deletes all of its tournaments.",
         "Security logs at Supabase: for the period set by Supabase, normally a few weeks.",
         "Data in your browser: until you sign out (the working copy is then removed) or clear your browser data.",
-        "Inactive accounts may be deleted after [12] months without login, after a notice to the email address on file.",
+        "Inactive accounts may be deleted after {{months}} months without login, after a notice to the email address on file.",
       ],
     },
     {
       heading: "7. Your rights",
       paragraphs: [
         "Under the GDPR you have the right to access, rectification, erasure, restriction of processing, data portability and to object to processing based on legitimate interests. You may also withdraw consent you have given, with effect for the future, and lodge a complaint with a data protection supervisory authority, for example the one in your country of residence.",
-        "Most of this you can do yourself in the app: delete a tournament, delete your account, download a backup file of a tournament (this also serves as a portable copy). For everything else, write to [email address]. We will answer within one month.",
+        "Most of this you can do yourself in the app: delete a tournament, delete your account, download a backup file of a tournament (this also serves as a portable copy). For everything else, write to {{email}}. We will answer within one month.",
       ],
     },
     {
@@ -118,7 +131,7 @@ const de: LegalText = {
   title: "Nutzungsbedingungen und Datenschutzhinweis",
   version: `Fassung ${TERMS_VERSION}`,
   draftNotice:
-    "ENTWURF: Ersetze alle [Platzhalter in eckigen Klammern] durch deine echten Angaben und lass den Text vor der Veröffentlichung von einer fachkundigen Person prüfen. Er ist eine Arbeitsgrundlage und keine Rechtsberatung.",
+    "ENTWURF: Ersetze alle [Platzhalter in eckigen Klammern] durch deine echten Angaben und lass den Text vor der Veröffentlichung von einer fachkundigen Person prüfen. Er ist eine Arbeitsgrundlage und keine Rechtsberatung. Wenn das Projekt wächst, kommerziell wird oder sich an die Allgemeinheit richtet, kann eine Postanschrift (oder eine Vereinsadresse) und ein Impressum nötig werden.",
   summaryTitle: "Warum du das liest: die Kurzfassung",
   summary: [
     "Sternchenturnier ist ein kleines Werkzeug zur Organisation von Tischtennisturnieren: Es bildet Paarungen, erfasst Sieger und zeigt Ranglisten.",
@@ -132,8 +145,8 @@ const de: LegalText = {
     {
       heading: "1. Wer verantwortlich ist",
       paragraphs: [
-        "Betreiber des Dienstes ist [vollständiger Name oder Organisation], [Straße und Hausnummer], [PLZ und Ort], [Land]. Kontakt für alle Fragen zu diesem Dienst und zu deinen Daten: [E-Mail-Adresse].",
-        "Diese Person bzw. Organisation ist Verantwortlicher für die hier beschriebenen personenbezogenen Daten (Art. 4 Nr. 7 DSGVO).",
+        "Sternchenturnier ist ein kostenloses, nicht-kommerzielles Hobbyprojekt. Betrieben wird es von {{name}}. Kontakt für alle Fragen zu diesem Dienst und zu deinen Daten: {{email}}.",
+        "Diese Person ist Verantwortlicher für die hier beschriebenen personenbezogenen Daten (Art. 4 Nr. 7 DSGVO). Der Dienst wird privat und ohne Gewinnabsicht betrieben; er verkauft nichts und zeigt keine Werbung.",
       ],
     },
     {
@@ -143,7 +156,7 @@ const de: LegalText = {
         "Kontodaten: deine E-Mail-Adresse, ein Passwort-Hash (nie das Passwort selbst), Zeitpunkt der Registrierung und der letzten Anmeldung, deine IP-Adresse und Browserangaben in Sicherheitsprotokollen von Supabase sowie ein Nachweis, wann du diese Bedingungen in welcher Fassung akzeptiert hast. Zweck: Einrichtung und Absicherung deines Kontos. Rechtsgrundlage: Erfüllung des mit der Registrierung geschlossenen Vertrags (Art. 6 Abs. 1 lit. b DSGVO) und unser berechtigtes Interesse an Sicherheit und Missbrauchsabwehr (Art. 6 Abs. 1 lit. f DSGVO).",
         "Turnierdaten: Turniernamen, Spielernamen, ob ein Spieler aktiv ist, Runden, Paarungen, Sieger, Tischanzahl und Oberflächensprache. Zweck: Bereitstellung der Turnierfunktionen, Online-Speicherung und Anzeige auf Bildschirmen. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO gegenüber dir als Organisator.",
         "Daten in deinem Browser: deine Anmeldesitzung, eine Arbeitskopie des geöffneten Turniers, welches Turnier geöffnet war, und deine Sprache. Sie liegen im lokalen Speicher des Browsers und sind für den gewünschten Dienst unbedingt erforderlich. Wir setzen keine Werbung, kein Tracking und keine Analyse ein, daher ist hierfür kein Einwilligungsbanner nötig.",
-        "Hosting-Daten: Die Website selbst wird von [Hosting-Anbieter, z. B. GitHub Pages] ausgeliefert, der beim Aufruf technische Verbindungsdaten wie deine IP-Adresse protokollieren kann. Auf diese Protokolle haben wir über die Einstellungen des Anbieters hinaus keinen Zugriff.",
+        "Hosting-Daten: Die Website selbst wird von {{hosting}} ausgeliefert, der beim Aufruf technische Verbindungsdaten wie deine IP-Adresse protokollieren kann. Auf diese Protokolle haben wir über die Einstellungen des Anbieters hinaus keinen Zugriff.",
       ],
     },
     {
@@ -165,8 +178,8 @@ const de: LegalText = {
     {
       heading: "5. Dienstleister und Datenübermittlung",
       paragraphs: [
-        "Konten, Datenbank und Live-Aktualisierung stellt Supabase bereit. Mit Supabase besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Unser Projekt wird in der Region [EU-Region, z. B. Frankfurt (eu-central-1)] betrieben. Supabase und dessen Unterauftragsverarbeiter können Daten auch außerhalb der EU bzw. des EWR verarbeiten; dies ist durch geeignete Garantien wie die EU-Standardvertragsklauseln oder das EU-US Data Privacy Framework abgesichert.",
-        "Die Dateien der Website hostet [Hosting-Anbieter]. Wir verkaufen deine Daten nicht und geben sie nicht für Werbung weiter.",
+        "Konten, Datenbank und Live-Aktualisierung stellt Supabase bereit. Mit Supabase besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Unser Projekt wird in der Region {{region}} betrieben. Supabase und dessen Unterauftragsverarbeiter können Daten auch außerhalb der EU bzw. des EWR verarbeiten; dies ist durch geeignete Garantien wie die EU-Standardvertragsklauseln oder das EU-US Data Privacy Framework abgesichert.",
+        "Die Dateien der Website hostet {{hosting}}. Wir verkaufen deine Daten nicht und geben sie nicht für Werbung weiter.",
       ],
     },
     {
@@ -176,14 +189,14 @@ const de: LegalText = {
         "Turniere: bis du sie oder dein Konto löschst. Beim Löschen eines Kontos werden alle zugehörigen Turniere gelöscht.",
         "Sicherheitsprotokolle bei Supabase: für den von Supabase festgelegten Zeitraum, in der Regel einige Wochen.",
         "Daten in deinem Browser: bis du dich abmeldest (die Arbeitskopie wird dann entfernt) oder deine Browserdaten löschst.",
-        "Inaktive Konten können nach [12] Monaten ohne Anmeldung gelöscht werden, nach vorheriger Benachrichtigung an die hinterlegte E-Mail-Adresse.",
+        "Inaktive Konten können nach {{months}} Monaten ohne Anmeldung gelöscht werden, nach vorheriger Benachrichtigung an die hinterlegte E-Mail-Adresse.",
       ],
     },
     {
       heading: "7. Deine Rechte",
       paragraphs: [
         "Nach der DSGVO hast du das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie das Recht, der Verarbeitung auf Grundlage berechtigter Interessen zu widersprechen. Eine erteilte Einwilligung kannst du mit Wirkung für die Zukunft widerrufen. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, etwa der an deinem Wohnort.",
-        "Vieles davon kannst du selbst in der App erledigen: ein Turnier löschen, dein Konto löschen, eine Sicherungsdatei eines Turniers herunterladen (sie dient auch als übertragbare Kopie). Für alles andere schreibe an [E-Mail-Adresse]. Wir antworten innerhalb eines Monats.",
+        "Vieles davon kannst du selbst in der App erledigen: ein Turnier löschen, dein Konto löschen, eine Sicherungsdatei eines Turniers herunterladen (sie dient auch als übertragbare Kopie). Für alles andere schreibe an {{email}}. Wir antworten innerhalb eines Monats.",
       ],
     },
     {
@@ -214,4 +227,28 @@ const de: LegalText = {
   ],
 };
 
-export const legalText: Record<Lang, LegalText> = { en, de };
+const TOKENS: Record<string, string> = {
+  "{{name}}": OPERATOR.name,
+  "{{email}}": OPERATOR.email,
+  "{{hosting}}": OPERATOR.hosting,
+  "{{region}}": OPERATOR.region,
+  "{{months}}": OPERATOR.months,
+};
+
+const fill = (text: string) => Object.entries(TOKENS).reduce((t, [token, value]) => t.split(token).join(value), text);
+
+const fillAll = (doc: LegalText): LegalText => ({
+  ...doc,
+  title: fill(doc.title),
+  summary: doc.summary.map(fill),
+  sections: doc.sections.map((sec) => ({
+    heading: fill(sec.heading),
+    paragraphs: sec.paragraphs?.map(fill),
+    list: sec.list?.map(fill),
+  })),
+});
+
+// True while any value above still looks like a placeholder
+export const legalIsDraft = Object.values(OPERATOR).some((v) => v.includes("["));
+
+export const legalText: Record<Lang, LegalText> = { en: fillAll(en), de: fillAll(de) };

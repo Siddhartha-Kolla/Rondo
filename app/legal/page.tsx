@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LANGS, translate, type Lang } from "@/lib/i18n";
-import { legalText } from "@/lib/legal";
+import { legalIsDraft, legalText } from "@/lib/legal";
 import { repository } from "@/lib/repository";
 
 // Terms of use + privacy notice. Opens in its own tab so a half-filled sign-up form is not lost.
@@ -34,9 +34,11 @@ export default function LegalPage() {
         <p className="text-muted-foreground">{text.version}</p>
       </div>
 
-      <p role="note" className="border px-3 py-2 text-muted-foreground">
-        {text.draftNotice}
-      </p>
+      {legalIsDraft && (
+        <p role="note" className="border px-3 py-2 text-muted-foreground">
+          {text.draftNotice}
+        </p>
+      )}
 
       <section className="flex flex-col gap-2 border bg-muted p-4" aria-labelledby="summary-heading">
         <h2 id="summary-heading" className="font-medium">
