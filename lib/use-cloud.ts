@@ -2,17 +2,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   createTournament,
+  deleteMyAccount,
   deleteTournament,
   fetchSharedState,
   fetchTournament,
   listTournaments,
   renameTournament,
+  rotateShareId,
   saveTournament,
+  setShareEnabled,
   signInWithPassword,
   signUpWithPassword,
   supabase,
   type CloudTournament,
 } from "./cloud";
+import { TERMS_VERSION } from "./legal";
 import { emptyState, type State } from "./repository";
 
 // local = not signed in | saving = signed in, changes on their way | the rest are what you'd expect
@@ -47,7 +51,7 @@ const recallCurrent = () => {
   }
 };
 
-type Open = { id: string; shareId: string; name: string };
+type Open = { id: string; shareId: string; shareEnabled: boolean; name: string };
 
 // Organizer side: sign in with email + password, keep the open tournament saved online,
 // and switch between all of the organizer's tournaments.
@@ -110,7 +114,7 @@ export function useCloudSync(state: State, ready: boolean, replaceState: (s: Sta
   // tournament takes over what is already on this device instead of wiping it.
   const adopt = useCallback(
     async (t: CloudTournament, adoptLocalIfEmpty: boolean) => {
-      setTournament({ id: t.id, shareId: t.shareId, name: t.name });
+      setTournament({ id: t.id, shareId: t.shareId, shareEnabled: t.shareEnabled, name: t.name });
       rememberCurrent(t.id);
       if (hasContent(t.state) || !adoptLocalIfEmpty || !hasContent(stateRef.current)) {
         const next: State = { ...emptyState, ...t.state, lang: stateRef.current.lang };
@@ -281,7 +285,11 @@ export function useCloudSync(state: State, ready: boolean, replaceState: (s: Sta
   );
 
   const signIn = useCallback((address: string, password: string) => signInWithPassword(address, password), []);
-  const signUp = useCallback((address: string, password: string) => signUpWithPassword(address, password), []);
+  const signUp = useCallback(
+    (address: string, password: string) =>
+      signUpWithPassword(address, password, { version: TERMS_VERSION, at: new Date().toISOString() }),
+    [],
+  );
 
   // Signs out and clears this device's copy, but only once everything is safely saved online
   const signOut = useCallback(async (): Promise<boolean> => {
@@ -297,6 +305,51 @@ export function useCloudSync(state: State, ready: boolean, replaceState: (s: Sta
     return true;
   }, [flush, replaceState]);
 
+  // Display link controls for the open tournament
+  const newShareLink = useCallback(async () => {
+    if (!tournament) return;
+    try {
+      const r = await rotateShareId(tournament.id);
+      knownUpdatedAt.current = r.updatedAt;
+      setTournament({ ...tournament, shareId: r.shareId });
+      await refreshList();
+    } catch (e) {
+      fail(e);
+    }
+  }, [tournament, refreshList, fail]);
+
+  const setLinkEnabled = useCallback(
+    async (enabled: boolean) => {
+      if (!tournament) return;
+      try {
+        knownUpdatedAt.current = await setShareEnabled(tournament.id, enabled);
+        setTournament({ ...tournament, shareEnabled: enabled });
+        await refreshList();
+      } catch (e) {
+        fail(e);
+      }
+    },
+    [tournament, refreshList, fail],
+  );
+
+  // Permanently deletes the account and everything in it; returns an error text or null
+  const deleteAccount = useCallback(async (): Promise<string | null> => {
+    try {
+      await deleteMyAccount();
+    } catch (e) {
+      return ((e ?? {}) as { message?: string }).message ?? "Error";
+    }
+    await supabase?.auth.signOut({ scope: "local" });
+    setTournament(null);
+    setList([]);
+    knownUpdatedAt.current = null;
+    lastSynced.current = null;
+    rememberCurrent(null);
+    replaceState({ ...emptyState, lang: stateRef.current.lang });
+    setPhase("idle");
+    return null;
+  }, [replaceState]);
+
   // After a conflict: take what the other device saved
   const reload = useCallback(async () => {
     if (!tournament) return;
@@ -310,6 +363,7 @@ export function useCloudSync(state: State, ready: boolean, replaceState: (s: Sta
     available: active,
     email,
     shareId: tournament?.shareId ?? null,
+    shareEnabled: tournament?.shareEnabled ?? true,
     currentId: tournament?.id ?? null,
     name: tournament?.name ?? null,
     list,
@@ -320,6 +374,9 @@ export function useCloudSync(state: State, ready: boolean, replaceState: (s: Sta
     signUp,
     signOut,
     reload,
+    newShareLink,
+    setLinkEnabled,
+    deleteAccount,
     refreshList,
     open,
     createNew,

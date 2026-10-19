@@ -7,7 +7,8 @@ create table public.tournaments (
   share_id    text not null unique default encode(gen_random_bytes(12), 'hex'), -- the unguessable display link
   name        text not null default 'Sternchenturnier' check (char_length(name) between 1 and 80),
   state       jsonb not null default '{}'::jsonb check (pg_column_size(state) < 500000),
-  updated_at  timestamptz not null default now()
+  updated_at  timestamptz not null default now(),
+  share_enabled boolean not null default true -- the display link can be switched off
 );
 
 alter table public.tournaments enable row level security;
@@ -30,8 +31,21 @@ language sql
 security definer
 set search_path = public
 as $$
-  select name, state, updated_at from public.tournaments where share_id = p_share_id;
+  select name, state, updated_at from public.tournaments where share_id = p_share_id and share_enabled;
 $$;
 
 revoke all on function public.get_shared_tournament(text) from public;
 grant execute on function public.get_shared_tournament(text) to anon, authenticated;
+
+-- A logged-in user can delete their own account (tournaments go with it: on delete cascade)
+create function public.delete_my_account()
+returns void
+language sql
+security definer
+set search_path = public, auth
+as $$
+  delete from auth.users where id = auth.uid();
+$$;
+
+revoke all on function public.delete_my_account() from public;
+grant execute on function public.delete_my_account() to authenticated;

@@ -20,14 +20,106 @@ function friendly(message: string, t: (key: Key) => string): string {
   return message;
 }
 
+function DisplayLink() {
+  const { cloud, t } = useApp();
+  const [copied, setCopied] = useState(false);
+  if (!cloud.shareId) return null;
+  const url = displayUrl(cloud.shareId);
+
+  if (!cloud.shareEnabled) {
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="text-muted-foreground">{t("linkIsOff")}</p>
+        <Button variant="outline" className="self-start" onClick={() => cloud.setLinkEnabled(true)}>
+          {t("linkOn")}
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-1">
+      <Label htmlFor="display-link">{t("displayLink")}</Label>
+      <div className="flex gap-2">
+        <Input id="display-link" readOnly value={url} onFocus={(e) => e.currentTarget.select()} />
+        <Button
+          variant="outline"
+          onClick={() => {
+            navigator.clipboard?.writeText(url).then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            });
+          }}
+        >
+          {copied ? t("copied") : t("copy")}
+        </Button>
+      </div>
+      <p className="text-muted-foreground">{t("displayLinkHint")}</p>
+      <div className="flex flex-wrap gap-2 pt-1">
+        <Button variant="outline" onClick={cloud.newShareLink}>
+          {t("newLink")}
+        </Button>
+        <Button variant="outline" onClick={() => cloud.setLinkEnabled(false)}>
+          {t("linkOff")}
+        </Button>
+      </div>
+      <p className="text-muted-foreground">{t("newLinkHint")}</p>
+    </div>
+  );
+}
+
+function DeleteAccount({ email }: { email: string }) {
+  const { cloud, t } = useApp();
+  const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  if (!open) {
+    return (
+      <div className="flex flex-col gap-1 border-t pt-4">
+        <Button variant="ghost" className="self-start" onClick={() => setOpen(true)}>
+          {t("deleteAccount")}
+        </Button>
+      </div>
+    );
+  }
+
+  const matches = typed.trim().toLowerCase() === email.toLowerCase();
+  return (
+    <div className="flex flex-col gap-2 border-t pt-4">
+      <h3 className="font-medium">{t("deleteAccount")}</h3>
+      <p>{t("deleteAccountHint")}</p>
+      <Label htmlFor="delete-confirm">{t("deleteAccountConfirm")}</Label>
+      <Input id="delete-confirm" value={typed} autoComplete="off" onChange={(e) => setTyped(e.target.value)} />
+      <div className="flex gap-2">
+        <Button
+          variant="destructive"
+          disabled={!matches}
+          onClick={async () => setError(await cloud.deleteAccount())}
+        >
+          {t("deleteAccountButton")}
+        </Button>
+        <Button variant="outline" onClick={() => setOpen(false)}>
+          {t("cancel")}
+        </Button>
+      </div>
+      {error && (
+        <p role="alert" className="text-destructive [overflow-wrap:anywhere]">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function CloudSection() {
   const { cloud, t } = useApp();
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [accepted, setAccepted] = useState(false);
   const [message, setMessage] = useState<{ text: string; error: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
   const [signOutBlocked, setSignOutBlocked] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   if (!cloud.available) return null;
 
@@ -45,8 +137,10 @@ export function CloudSection() {
     setBusy(false);
   };
 
+  const complete = address.trim() !== "" && password.length >= 8;
+
   return (
-    <section className="flex flex-col gap-2 border-t pt-4" aria-labelledby="cloud-heading">
+    <section className="flex flex-col gap-3 border-t pt-4" aria-labelledby="cloud-heading">
       <h2 id="cloud-heading" className="font-medium">
         {t("cloud")}
       </h2>
@@ -55,27 +149,7 @@ export function CloudSection() {
         <>
           <p className="[overflow-wrap:anywhere]">{t("signedInAs", { email: cloud.email })}</p>
           <SaveStatus />
-
-          {cloud.shareId && (
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="display-link">{t("displayLink")}</Label>
-              <div className="flex gap-2">
-                <Input id="display-link" readOnly value={displayUrl(cloud.shareId)} onFocus={(e) => e.currentTarget.select()} />
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    navigator.clipboard?.writeText(displayUrl(cloud.shareId!)).then(() => {
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 2000);
-                    });
-                  }}
-                >
-                  {copied ? t("copied") : t("copy")}
-                </Button>
-              </div>
-              <p className="text-muted-foreground">{t("displayLinkHint")}</p>
-            </div>
-          )}
+          <DisplayLink />
 
           <Button
             variant="outline"
@@ -89,6 +163,8 @@ export function CloudSection() {
               {t("signOutUnsaved")}
             </p>
           )}
+
+          <DeleteAccount email={cloud.email} />
         </>
       ) : (
         <form
@@ -115,11 +191,27 @@ export function CloudSection() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
+          <label className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              checked={accepted}
+              onChange={(e) => setAccepted(e.target.checked)}
+              className="mt-0.5 size-4 shrink-0 accent-[var(--table-blue)]"
+            />
+            <span>
+              {t("acceptPrefix")}
+              <a href="legal" target="_blank" rel="noreferrer" className="underline underline-offset-4">
+                {t("legalLink")}
+              </a>
+            </span>
+          </label>
+
           <div className="flex gap-2">
-            <Button type="submit" disabled={busy || !address.trim() || password.length < 8}>
+            <Button type="submit" disabled={busy || !complete}>
               {t("signIn")}
             </Button>
-            <Button type="button" variant="outline" disabled={busy || !address.trim() || password.length < 8} onClick={() => submit("up")}>
+            <Button type="button" variant="outline" disabled={busy || !complete || !accepted} onClick={() => submit("up")}>
               {t("createAccount")}
             </Button>
           </div>

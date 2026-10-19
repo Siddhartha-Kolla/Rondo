@@ -8,17 +8,41 @@ const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 // null = cloud not configured: the app then works with browser storage only
 export const supabase = url && key ? createClient(url, key) : null;
 
-export type CloudTournament = { id: string; shareId: string; name: string; state: Partial<State>; updatedAt: string };
+export type CloudTournament = {
+  id: string;
+  shareId: string;
+  shareEnabled: boolean;
+  name: string;
+  state: Partial<State>;
+  updatedAt: string;
+};
 
-const COLUMNS = "id, share_id, name, state, updated_at";
+// "*" so the app also works before the share_enabled column exists (see supabase/migration-*.sql)
+const COLUMNS = "*";
 
-type Row = { id: string; share_id: string; name: string; state: Partial<State>; updated_at: string };
-const fromRow = (r: Row): CloudTournament => ({ id: r.id, shareId: r.share_id, name: r.name, state: r.state, updatedAt: r.updated_at });
+type Row = { id: string; share_id: string; share_enabled?: boolean; name: string; state: Partial<State>; updated_at: string };
+const fromRow = (r: Row): CloudTournament => ({
+  id: r.id,
+  shareId: r.share_id,
+  shareEnabled: r.share_enabled ?? true,
+  name: r.name,
+  state: r.state,
+  updatedAt: r.updated_at,
+});
 
 // Login with any email address: no email is sent unless the project requires confirmation
-export async function signUpWithPassword(email: string, password: string): Promise<{ error: string | null; confirm: boolean }> {
+// The accepted terms version and time are stored with the account as proof of consent
+export async function signUpWithPassword(
+  email: string,
+  password: string,
+  consent: { version: string; at: string },
+): Promise<{ error: string | null; confirm: boolean }> {
   if (!supabase) return { error: "Cloud is not configured", confirm: false };
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { accepted_terms_version: consent.version, accepted_terms_at: consent.at } },
+  });
   return { error: error?.message ?? null, confirm: !error && !data.session };
 }
 
@@ -94,4 +118,38 @@ export async function fetchSharedState(shareId: string): Promise<Partial<State> 
   const { data, error } = await supabase.rpc("get_shared_tournament", { p_share_id: shareId });
   if (error) throw error;
   return data?.[0]?.state ?? null;
+}
+
+// A new random display link; the old one stops working. Returns the new link and updated_at.
+export async function rotateShareId(id: string): Promise<{ shareId: string; updatedAt: string }> {
+  if (!supabase) throw new Error("cloud not configured");
+  const bytes = crypto.getRandomValues(new Uint8Array(12));
+  const shareId = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  const { data, error } = await supabase
+    .from("tournaments")
+    .update({ share_id: shareId, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select("updated_at")
+    .single();
+  if (error) throw error;
+  return { shareId, updatedAt: data.updated_at };
+}
+
+export async function setShareEnabled(id: string, enabled: boolean): Promise<string> {
+  if (!supabase) throw new Error("cloud not configured");
+  const { data, error } = await supabase
+    .from("tournaments")
+    .update({ share_enabled: enabled, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select("updated_at")
+    .single();
+  if (error) throw error;
+  return data.updated_at;
+}
+
+// Deletes the signed-in user's account and, through the database, all their tournaments
+export async function deleteMyAccount(): Promise<void> {
+  if (!supabase) throw new Error("cloud not configured");
+  const { error } = await supabase.rpc("delete_my_account");
+  if (error) throw error;
 }

@@ -72,6 +72,12 @@ function Shell() {
       {tab === "standings" && <StandingsView />}
       {tab === "tournaments" && cloud.email && <TournamentsView />}
       {tab === "setup" && <SetupView />}
+
+      <footer className="mt-auto border-t pt-4">
+        <a href="legal" target="_blank" rel="noreferrer" className="text-muted-foreground underline underline-offset-4">
+          {t("legalLink")}
+        </a>
+      </footer>
     </main>
   );
 }
