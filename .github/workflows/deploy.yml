@@ -27,11 +27,15 @@ jobs:
 
       - run: npm ci
 
-      # A project site lives under /<repository-name>; a user site (<name>.github.io) lives at the root
+      # A project site lives under /<repository-name>. A user site (<name>.github.io) and any site
+      # with its own custom domain live at the root, so they need no base path.
+      # Set the repository variable CUSTOM_DOMAIN (any non-empty value) when you use a custom domain.
       - name: Work out the base path
+        env:
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
         run: |
           REPO="${GITHUB_REPOSITORY#*/}"
-          if [[ "$REPO" == *.github.io ]]; then echo "NEXT_PUBLIC_BASE_PATH=" >> "$GITHUB_ENV"; else echo "NEXT_PUBLIC_BASE_PATH=/$REPO" >> "$GITHUB_ENV"; fi
+          if [[ -n "$CUSTOM_DOMAIN" || "$REPO" == *.github.io ]]; then echo "NEXT_PUBLIC_BASE_PATH=" >> "$GITHUB_ENV"; else echo "NEXT_PUBLIC_BASE_PATH=/$REPO" >> "$GITHUB_ENV"; fi
 
       - run: npm run build
         env:
