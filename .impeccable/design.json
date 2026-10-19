@@ -109,6 +109,14 @@
       "description": "Low-emphasis action; fills on hover.",
       "html": "<button class=\"ds-btn-ghost\">Skip</button>",
       "css": ".ds-btn-ghost{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 10px;border:1px solid transparent;border-radius:0;background:transparent;color:oklch(0.145 0 0);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}.ds-btn-ghost:hover{background:oklch(0.97 0 0)}.ds-btn-ghost:focus-visible{outline:none;border-color:oklch(0.708 0 0)}.ds-btn-ghost:active{transform:translateY(1px)}"
+    },
+    {
+      "name": "Form Strip",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Last ten rounds of one player: filled = won, outlined = lost, shaded = sat out, dashed = undecided.",
+      "html": "<div class=\"ds-form\"><span class=\"ds-form-win\"></span><span class=\"ds-form-loss\"></span><span class=\"ds-form-sat\"></span><span class=\"ds-form-pending\"></span></div>",
+      "css": ".ds-form{display:flex;gap:4px}.ds-form span{width:16px;height:16px;display:block}.ds-form-win{background:oklch(0.145 0 0)}.ds-form-loss{border:1px solid oklch(0.145 0 0)}.ds-form-sat{background:oklch(0.97 0 0)}.ds-form-pending{border:1px dashed oklch(0.556 0 0)}"
     }
   ],
   "narrative": {

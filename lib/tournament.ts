@@ -131,3 +131,82 @@ export function standings(playerIds: string[], rounds: Round[]): Standing[] {
   const rate = (s: Standing) => (s.games === 0 ? 0 : s.stars / s.games);
   return [...table.values()].sort((a, b) => b.stars - a.stars || rate(b) - rate(a) || a.games - b.games);
 }
+
+export type PairRecord = { id: string; games: number; wins: number };
+export type LogEntry = { round: number; table: number; partner: string; opponents: Team; won: boolean | null };
+export type FormCell = "win" | "loss" | "sat" | "pending";
+
+export type History = {
+  stars: number;
+  games: number;
+  sat: number; // rounds without a table
+  bestStreak: number;
+  streak: number;
+  partners: PairRecord[]; // most games first
+  opponents: PairRecord[];
+  neverPartnered: string[]; // other players this one has not teamed up with yet
+  neverFaced: string[];
+  log: LogEntry[]; // newest first
+  form: FormCell[]; // oldest first, last 10 rounds
+};
+
+// Everything one player did, read off the rounds. Only decided matches count as games.
+export function playerHistory(playerId: string, others: string[], rounds: Round[]): History {
+  const partners = new Map<string, PairRecord>();
+  const opponents = new Map<string, PairRecord>();
+  const log: LogEntry[] = [];
+  const form: FormCell[] = [];
+  let stars = 0, games = 0, sat = 0, streak = 0, bestStreak = 0;
+
+  const bump = (map: Map<string, PairRecord>, id: string, won: boolean) => {
+    const row = map.get(id) ?? { id, games: 0, wins: 0 };
+    row.games++;
+    if (won) row.wins++;
+    map.set(id, row);
+  };
+
+  rounds.forEach((round, roundIndex) => {
+    const tableIndex = round.findIndex((m) => m.teams.some((team) => team.includes(playerId)));
+    if (tableIndex === -1) {
+      sat++;
+      form.push("sat");
+      return;
+    }
+    const { teams, winner } = round[tableIndex];
+    const side = teams[0].includes(playerId) ? 0 : 1;
+    const partner = teams[side].find((id) => id !== playerId)!;
+    const opposing = teams[1 - side];
+    log.push({ round: roundIndex + 1, table: tableIndex + 1, partner, opponents: opposing, won: winner === null ? null : winner === side });
+    if (winner === null) {
+      form.push("pending");
+      return;
+    }
+    const won = winner === side;
+    games++;
+    form.push(won ? "win" : "loss");
+    bump(partners, partner, won);
+    opposing.forEach((id) => bump(opponents, id, won));
+    if (won) {
+      stars++;
+      streak++;
+      bestStreak = Math.max(bestStreak, streak);
+    } else {
+      streak = 0;
+    }
+  });
+
+  const byGames = (a: PairRecord, b: PairRecord) => b.games - a.games || b.wins - a.wins;
+  return {
+    stars,
+    games,
+    sat,
+    bestStreak,
+    streak,
+    partners: [...partners.values()].sort(byGames),
+    opponents: [...opponents.values()].sort(byGames),
+    neverPartnered: others.filter((id) => id !== playerId && !partners.has(id)),
+    neverFaced: others.filter((id) => id !== playerId && !opponents.has(id)),
+    log: log.reverse(),
+    form: form.slice(-10),
+  };
+}

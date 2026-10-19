@@ -3,6 +3,8 @@ import { Star } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useApp, useNames } from "@/lib/store";
+import { useState } from "react";
+import { PlayerProfile } from "@/components/player-profile";
 import { standings, type Standing } from "@/lib/tournament";
 
 const CELLS = 10;
@@ -36,9 +38,9 @@ export function useStandingRows(): { rows: Standing[]; max: number; hasRounds: b
   return { rows, max: rows[0]?.stars ?? 0, hasRounds: state.rounds.length > 0 };
 }
 
-type TableProps = { rows: Standing[]; max: number; startRank?: number; large?: boolean };
+type TableProps = { rows: Standing[]; max: number; startRank?: number; large?: boolean; onSelect?: (id: string) => void };
 
-export function StandingsTable({ rows, max, startRank = 0, large }: TableProps) {
+export function StandingsTable({ rows, max, startRank = 0, large, onSelect }: TableProps) {
   const { t } = useApp();
   const name = useNames();
   const cell = large ? "py-[1.2vh] pr-[1.5vw]" : "py-2 pr-2";
@@ -65,7 +67,20 @@ export function StandingsTable({ rows, max, startRank = 0, large }: TableProps) 
               </td>
               <td className={cn(cell, "min-w-0")}>
                 <div className="flex flex-col gap-1">
-                  <span className={cn("[overflow-wrap:anywhere]", leader && "font-medium")}>{name(row.id)}</span>
+                  {onSelect ? (
+                    <button
+                      type="button"
+                      onClick={() => onSelect(row.id)}
+                      className={cn(
+                        "w-fit text-left underline-offset-4 outline-none hover:underline focus-visible:ring-1 focus-visible:ring-ring [overflow-wrap:anywhere]",
+                        leader && "font-medium",
+                      )}
+                    >
+                      {name(row.id)}
+                    </button>
+                  ) : (
+                    <span className={cn("[overflow-wrap:anywhere]", leader && "font-medium")}>{name(row.id)}</span>
+                  )}
                   <Bar value={row.stars} max={max} large={large} />
                 </div>
               </td>
@@ -88,9 +103,12 @@ export function StandingsTable({ rows, max, startRank = 0, large }: TableProps) 
 export function StandingsView() {
   const { t } = useApp();
   const { rows, max, hasRounds } = useStandingRows();
+  const [selected, setSelected] = useState<string | null>(null);
+
+  if (selected) return <PlayerProfile playerId={selected} onBack={() => setSelected(null)} />;
 
   if (rows.length === 0 || !hasRounds) {
     return <p className="text-muted-foreground">{t("noGamesYet")}</p>;
   }
-  return <StandingsTable rows={rows} max={max} />;
+  return <StandingsTable rows={rows} max={max} onSelect={setSelected} />;
 }

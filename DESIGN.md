@@ -159,6 +159,9 @@ The playful elements, all built from the same square, flat parts:
 ### Earlier Rounds
 Closed by default. Each round is a bordered summary row (round name, results count) that opens to one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
 
+### Player Profile
+Opened by tapping a name in Standings (read-only display windows show plain names). An inline view with a Back button, not a modal. Plain bordered lists: a summary list, a form strip of ten 16px square cells (filled = won, outlined = lost, shaded = sat out, dashed = undecided, each with a tooltip), partner and opponent lists with games and wins, and a match log whose won rows are shaded and starred.
+
 ### Table Match (provisional)
 The current implementation shows each match as "Table N: A & B vs C & D" in a pill with a Chalk fill. This is a placeholder pending the table-graphic design.
 
