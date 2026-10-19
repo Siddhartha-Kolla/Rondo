@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" role="img">
+  <title>Rondo</title>
+  <rect width="1280" height="320" fill="#FAF8F4"/>
+  <g transform="translate(92 111.84) scale(1.12)">
+    <g fill="#1E1B16">
+      <!-- R -->
+      <path fill-rule="evenodd" d="M0 0H40C61 0 73 11 73 29C73 42 66 51 54 55L76 86H52L34 59H21V86H0ZM21 42H38C47 42 52 38 52 29C52 21 47 17 38 17H21Z"/>
+      <!-- o -->
+      <path fill-rule="evenodd" d="M119 23C98 23 85 37 85 56C85 75 98 89 119 89C140 89 153 75 153 56C153 37 140 23 119 23ZM119 40C128 40 133 46 133 56C133 66 128 72 119 72C110 72 105 66 105 56C105 46 110 40 119 40Z"/>
+      <!-- n -->
+      <path d="M165 25H185V35C191 27 199 23 210 23C229 23 239 35 239 55V86H218V58C218 46 214 41 205 41C196 41 186 47 186 60V86H165Z"/>
+      <!-- d (moved right so it no longer touches the n) -->
+      <path transform="translate(16 0)" fill-rule="evenodd" d="M291 0H312V86H292V77C286 85 278 89 267 89C248 89 235 75 235 56C235 37 248 23 267 23C277 23 285 27 291 34ZM273 41C263 41 256 47 256 56C256 65 263 72 273 72C284 72 291 65 291 56C291 47 284 41 273 41Z"/>
+      <!-- o -->
+      <path transform="translate(16 0)" fill-rule="evenodd" d="M358 23C337 23 324 37 324 56C324 75 337 89 358 89C379 89 392 75 392 56C392 37 379 23 358 23ZM358 40C367 40 372 46 372 56C372 66 367 72 358 72C349 72 344 66 344 56C344 46 349 40 358 40Z"/>
+    </g>
+  </g>
+  <g transform="translate(1011.30 71.65) scale(1.55)">
+    <rect x="0" y="0" width="52" height="52" fill="#2F5FD0"/>
+    <rect x="62" y="0" width="52" height="52" fill="#1E1B16"/>
+    <rect x="0" y="62" width="52" height="52" fill="#1E1B16"/>
+    <rect x="62" y="62" width="52" height="52" fill="#2F5FD0"/>
+    <path d="M26.0 7.91 31.88 19.82 45.02 21.73 35.51 31.0 37.76 44.09 26.0 37.91 14.24 44.09 16.49 31.0 6.98 21.73 20.12 19.82Z" fill="#FFC266"/>
+  </g>
+</svg>

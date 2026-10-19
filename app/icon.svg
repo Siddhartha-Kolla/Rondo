@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img">
+  <title>Rondo app icon</title>
+  <rect x="4" y="4" width="26" height="26" fill="#2F5FD0"/>
+  <rect x="34" y="4" width="26" height="26" fill="#1E1B16"/>
+  <rect x="4" y="34" width="26" height="26" fill="#1E1B16"/>
+  <rect x="34" y="34" width="26" height="26" fill="#2F5FD0"/>
+  <path d="M17.0 7.5 20.09 13.75 26.99 14.76 21.99 19.62 23.17 26.49 17.0 23.25 10.83 26.49 12.01 19.62 7.01 14.76 13.91 13.75Z" fill="#FFC266"/>
+</svg>
