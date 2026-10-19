@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { StandingsTable, useStandingRows } from "@/components/standings-view";
 import { TableGraphic } from "@/components/table-graphic";
 import { AppProvider, useApp, useNames } from "@/lib/store";
+import { Logo } from "@/components/logo";
 import { formatTime } from "@/components/save-status";
 import { playersOf } from "@/lib/tournament";
 
@@ -63,7 +64,10 @@ function Display() {
   return (
     <main className="flex h-screen flex-col gap-[2vh] overflow-hidden p-[2.5vh] text-[clamp(1rem,2.4vh,2rem)]">
       <header className="flex items-center gap-[1.5vw]">
-        <h1 className="font-medium">{t("appName")}</h1>
+        <h1 className="flex items-center gap-[0.6em] font-medium">
+          <Logo className="size-[1.6em]" />
+          {t("appName")}
+        </h1>
         {state.rounds.length > 0 && (
           <p className="text-muted-foreground">{t("round", { n: state.rounds.length })}</p>
         )}

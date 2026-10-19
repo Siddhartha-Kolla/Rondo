@@ -6,6 +6,7 @@ import { SetupView } from "@/components/setup-view";
 import { StandingsView } from "@/components/standings-view";
 import { TournamentsView } from "@/components/tournaments-view";
 import { CloudSection, displayUrl } from "@/components/cloud-section";
+import { Logo } from "@/components/logo";
 import { SaveStatus } from "@/components/save-status";
 import { LANGS } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
@@ -31,7 +32,10 @@ export function Shell() {
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-4 text-xs">
       <header className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
-          <h1 className="mr-auto text-sm font-medium">{t("appName")}</h1>
+          <h1 className="mr-auto flex items-center gap-2 text-sm font-medium">
+            <Logo />
+            {t("appName")}
+          </h1>
           <Button size="sm" variant="outline" onClick={() => window.open(cloud.shareId ? displayUrl(cloud.shareId) : new URL("display", window.location.href).toString(), "sternchenturnier-display")}>
             {t("openDisplay")}
           </Button>

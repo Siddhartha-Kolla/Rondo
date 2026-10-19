@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { LANGS, translate, type Lang } from "@/lib/i18n";
 import { legalIsDraft, legalText } from "@/lib/legal";
@@ -30,7 +31,10 @@ export default function LegalPage() {
       </header>
 
       <div>
-        <h1 className="text-sm font-medium">{text.title}</h1>
+        <h1 className="flex items-center gap-2 text-sm font-medium">
+          <Logo />
+          {text.title}
+        </h1>
         <p className="text-muted-foreground">{text.version}</p>
       </div>
 
