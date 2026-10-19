@@ -153,6 +153,12 @@ The playful elements, all built from the same square, flat parts:
 - **Progress / streak:** segmented bars made of square cells separated by 1px gaps, filled with Ink; no rounded caps, no gradients.
 - **Feedback:** a result entry changes the row state instantly (fill from Paper to Chalk, star appears). Motion is limited to a short fade; no bounce, confetti or glow.
 
+### Display (monitor view)
+`/display` is a read-only screen for a monitor or TV in a second window. Same square, flat vocabulary at a larger scale: type sized from viewport height, standings in pages of eight rows, and the current round's tables, alternating every 15 seconds. A small square Table Blue marker labels it live. Its only control is Fullscreen.
+
+### Earlier Rounds
+Closed by default. Each round is a bordered summary row (round name, results count) that opens to one bordered block per table; the winning team's row is shaded and starred, the losing row is muted.
+
 ### Table Match (provisional)
 The current implementation shows each match as "Table N: A & B vs C & D" in a pill with a Chalk fill. This is a placeholder pending the table-graphic design.
 

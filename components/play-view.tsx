@@ -1,6 +1,7 @@
 "use client";
 import { Star } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { TableGraphic } from "@/components/table-graphic";
 import { useApp, useNames } from "@/lib/store";
 import { playersOf, type Round } from "@/lib/tournament";
@@ -32,7 +33,7 @@ export function PlayView() {
             <p className="text-muted-foreground">{t("decided", { done: decided, total: current.length })}</p>
           </div>
 
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-4">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-4">
             {current.map((match, index) => (
               <div key={index} className="flex flex-col gap-1">
                 <p className="font-medium">{t("table", { n: index + 1 })}</p>
@@ -52,41 +53,57 @@ export function PlayView() {
         </section>
       )}
 
-      <div className="flex flex-col gap-1">
-        <Button size="lg" className="w-full" disabled={!canStart} onClick={actions.startNextRound}>
-          {current ? t("nextRound") : t("startFirstRound")}
-        </Button>
-        {activeCount >= 4 && !allDecided && <p className="text-muted-foreground">{t("markAllToContinue")}</p>}
-      </div>
+      <Button size="lg" className="w-full" disabled={!canStart} onClick={actions.startNextRound}>
+        {current ? t("nextRound") : t("startFirstRound")}
+      </Button>
 
       {state.rounds.length > 1 && (
-        <section className="flex flex-col gap-2 border-t pt-4" aria-labelledby="earlier-rounds">
+        <section className="flex flex-col gap-4 border-t pt-4" aria-labelledby="earlier-rounds">
           <h2 id="earlier-rounds" className="font-medium">
             {t("earlierRounds")}
           </h2>
-          <ol className="flex flex-col gap-3">
-            {state.rounds
-              .slice(0, -1)
-              .map((round, i) => ({ round, number: i + 1 }))
-              .reverse()
-              .map(({ round, number }) => (
-                <li key={number} className="flex flex-col gap-1">
-                  <p className="text-muted-foreground">{t("round", { n: number })}</p>
+          {state.rounds
+            .slice(0, -1)
+            .map((round, i) => ({ round, number: i + 1 }))
+            .reverse()
+            .map(({ round, number }) => (
+              <details key={number}>
+                <summary className="flex cursor-pointer items-baseline justify-between gap-4 border px-3 py-2 text-sm font-medium outline-none select-none hover:bg-muted focus-visible:ring-1 focus-visible:ring-ring">
+                  <span>{t("round", { n: number })}</span>
+                  <span className="text-xs font-normal text-muted-foreground">
+                    {t("resultsCount", { done: round.filter((m) => m.winner !== null).length, total: round.length })}
+                  </span>
+                </summary>
+                <div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-2">
                   {round.map((match, index) => (
-                    <p key={index} className="flex flex-wrap items-center gap-x-2">
-                      <span className="text-muted-foreground">{t("table", { n: index + 1 })}</span>
-                      {match.teams.map((team, side) => (
-                        <span key={side} className="flex items-center gap-1">
-                          {side === 1 && <span className="text-muted-foreground">{t("vs")}</span>}
-                          {team.map(name).join(" & ")}
-                          {match.winner === side && <Star weight="fill" aria-label={t("stars")} className="size-3.5" />}
-                        </span>
-                      ))}
-                    </p>
+                    <div key={index} className="flex flex-col border">
+                      <p className="border-b px-3 py-1.5 text-muted-foreground">{t("table", { n: index + 1 })}</p>
+                      {match.teams.map((team, side) => {
+                        const won = match.winner === side;
+                        return (
+                          <p
+                            key={side}
+                            className={cn(
+                              "flex items-start gap-2 px-3 py-2 text-sm break-words",
+                              side === 1 && "border-t",
+                              won ? "bg-muted font-medium" : "text-muted-foreground",
+                            )}
+                          >
+                            <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center">
+                              {won && <Star weight="fill" aria-label={t("winnerOfMatch")} className="size-4" />}
+                            </span>
+                            <span className="min-w-0">{team.map(name).join(" & ")}</span>
+                          </p>
+                        );
+                      })}
+                    </div>
                   ))}
-                </li>
-              ))}
-          </ol>
+                </div>
+                <p className="mt-2 text-muted-foreground">
+                  {t("sittingOut")}: {sittingOut(round).join(", ") || t("nobody")}
+                </p>
+              </details>
+            ))}
         </section>
       )}
     </div>

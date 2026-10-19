@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { PlayView } from "@/components/play-view";
 import { SetupView } from "@/components/setup-view";
 import { StandingsView } from "@/components/standings-view";
@@ -25,8 +26,11 @@ function Shell() {
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 px-4 py-4 text-xs">
-      <header className="flex items-center justify-between gap-4">
-        <h1 className="text-sm font-medium">{t("appName")}</h1>
+      <header className="flex items-center gap-2">
+        <h1 className="mr-auto text-sm font-medium">{t("appName")}</h1>
+        <Button size="sm" variant="outline" onClick={() => window.open("/display", "sternchenturnier-display")}>
+          {t("openDisplay")}
+        </Button>
         <div role="group" aria-label={t("language")} className="flex">
           {LANGS.map((lang) => (
             <Button
@@ -66,7 +70,9 @@ function Shell() {
 export default function Home() {
   return (
     <AppProvider>
-      <Shell />
+      <TooltipProvider>
+        <Shell />
+      </TooltipProvider>
     </AppProvider>
   );
 }

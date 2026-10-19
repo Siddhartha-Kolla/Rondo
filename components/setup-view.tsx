@@ -44,7 +44,7 @@ export function SetupView() {
         >
           <Label htmlFor="new-players">{t("addPlayers")}</Label>
           <div className="flex gap-2">
-            <Input id="new-players" value={draft} onChange={(e) => setDraft(e.target.value)} autoComplete="off" />
+            <Input id="new-players" maxLength={200} value={draft} onChange={(e) => setDraft(e.target.value)} autoComplete="off" />
             <Button type="submit" disabled={!draft.trim()}>
               {t("add")}
             </Button>
@@ -60,6 +60,7 @@ export function SetupView() {
                 <Input
                   value={player.name}
                   aria-label={t("nameOf", { n: index + 1 })}
+                  maxLength={40}
                   onChange={(e) => actions.renamePlayer(player.id, e.target.value)}
                 />
                 <Button

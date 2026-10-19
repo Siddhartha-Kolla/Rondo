@@ -12,33 +12,49 @@ const emptyState: State = { players: [], tables: 2, rounds: [], lang: "en" };
 
 const newId = () => `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
-function useAppState() {
+function readStored(): State {
+  let saved: Partial<State> = {};
+  try {
+    saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
+  } catch {
+    saved = {};
+  }
+  return { ...emptyState, lang: detectLang(), ...saved };
+}
+
+// readOnly is for the display window: it follows the operator's window and never writes
+function useAppState(readOnly: boolean) {
   const [state, setState] = useState<State>(emptyState);
   const [ready, setReady] = useState(false);
 
   // Load once on the client (localStorage does not exist on the server)
   useEffect(() => {
     Promise.resolve().then(() => {
-      let saved: Partial<State> = {};
-      try {
-        saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
-      } catch {
-        saved = {};
-      }
-      setState({ ...emptyState, lang: detectLang(), ...saved });
+      setState(readStored());
       setReady(true);
     });
   }, []);
 
+  // The browser tells other windows of the same site when this key changes
+  useEffect(() => {
+    if (!readOnly) return;
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY || e.key === null) setState(readStored());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [readOnly]);
+
   useEffect(() => {
     if (!ready) return;
+    document.documentElement.lang = state.lang;
+    if (readOnly) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
       // storage full or blocked: the app keeps working in memory
     }
-    document.documentElement.lang = state.lang;
-  }, [state, ready]);
+  }, [state, ready, readOnly]);
 
   const update = useCallback((change: (s: State) => State) => setState(change), []);
 
@@ -85,8 +101,8 @@ function useAppState() {
 type App = ReturnType<typeof useAppState> & { t: (key: Key, values?: Record<string, string | number>) => string };
 const AppContext = createContext<App | null>(null);
 
-export function AppProvider({ children }: { children: ReactNode }) {
-  const app = useAppState();
+export function AppProvider({ children, readOnly = false }: { children: ReactNode; readOnly?: boolean }) {
+  const app = useAppState(readOnly);
   const lang = app.state.lang;
   const t = useCallback((key: Key, values?: Record<string, string | number>) => translate(lang, key, values), [lang]);
   const value = useMemo(() => ({ ...app, t }), [app, t]);
